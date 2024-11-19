@@ -12,7 +12,6 @@ func ScanFileByHashHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, x-apikey")
 	w.Header().Set("Content-Type", "application/json")
 
-	// Handle preflight request
 	if r.Method == "OPTIONS" {
 		w.WriteHeader(http.StatusOK)
 		return

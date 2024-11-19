@@ -14,7 +14,7 @@ import (
 )
 
 func init() {
-	// Load environment variables from .env file
+
 	err := godotenv.Load(".env")
 	if err != nil {
 		log.Fatal("Error loading .env file")
@@ -22,17 +22,16 @@ func init() {
 }
 
 func UploadFileHandler(w http.ResponseWriter, r *http.Request) {
-	APIKey := os.Getenv("API_KEY")
+	APIKey := os.Getenv("API_KEY_Scanner")
 	if APIKey == "" {
 		log.Fatal("API_KEY is not set in the .env file")
 	}
 
-	APIUrl := os.Getenv("API_URL")
+	APIUrl := os.Getenv("API_URL_Scanner")
 	if APIUrl == "" {
 		log.Fatal("API_URL is not set in the .env file")
 	}
 
-	// Parse the form data to get the file
 	err := r.ParseMultipartForm(10 << 20) // Limit file size to 10 MB
 	if err != nil {
 		http.Error(w, "Unable to parse form", http.StatusBadRequest)
@@ -46,7 +45,6 @@ func UploadFileHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	defer file.Close()
 
-	// Prepare the file for uploading using a multipart form
 	body := &bytes.Buffer{}
 	writer := multipart.NewWriter(body)
 
@@ -63,7 +61,6 @@ func UploadFileHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	writer.Close()
 
-	// Create the request to the external server
 	req, err := http.NewRequest("POST", APIUrl, body)
 	if err != nil {
 		http.Error(w, fmt.Sprintf("Error creating request: %v", err), http.StatusInternalServerError)
@@ -73,7 +70,6 @@ func UploadFileHandler(w http.ResponseWriter, r *http.Request) {
 	req.Header.Set("Content-Type", writer.FormDataContentType())
 	req.Header.Set("x-apikey", APIKey)
 
-	// Send the file to the API server
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
@@ -82,7 +78,6 @@ func UploadFileHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	defer resp.Body.Close()
 
-	// Read and parse the response from the API
 	bodyResp, err := io.ReadAll(resp.Body)
 	if err != nil {
 		http.Error(w, "Unable to read response", http.StatusInternalServerError)
@@ -95,7 +90,6 @@ func UploadFileHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Log and return the scan result
 	log.Printf("Scan result: %+v\n", result)
 
 	logToJSONFile(map[string]interface{}{
@@ -104,7 +98,6 @@ func UploadFileHandler(w http.ResponseWriter, r *http.Request) {
 		"data":    result,
 	})
 
-	// Return the result as JSON
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(result)
 }

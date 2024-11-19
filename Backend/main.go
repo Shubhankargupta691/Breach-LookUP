@@ -9,15 +9,12 @@ import (
 
 	email "BreachLookUP/Email"
 	password "BreachLookUP/Password"
+	scanner "BreachLookUP/Scanner"
 )
 
 func main() {
 	// Setup router
 	r := mux.NewRouter()
-
-	// Routes
-	r.HandleFunc("/api/email", email.HandleInput).Methods("GET")
-	r.HandleFunc("/api/password", password.HandleInput).Methods("GET")
 
 	// Configure CORS to allow requests from your frontend
 	corsOptions := handlers.CORS(
@@ -25,6 +22,13 @@ func main() {
 		handlers.AllowedMethods([]string{"POST", "GET", "OPTIONS"}),                       // Allowed HTTP methods
 		handlers.AllowedHeaders([]string{"Content-Type", "X-File-Hash", "Authorization"}), // Allowed headers
 	)
+
+	// Routes
+	r.HandleFunc("/api/email", email.HandleInput).Methods("GET")
+	r.HandleFunc("/api/password", password.HandleInputPassword).Methods("GET")
+	r.HandleFunc("/upload", scanner.UploadFileHandler).Methods("POST")
+	r.HandleFunc("/scan/hash", scanner.ScanFileByHashHandler).Methods("POST")
+	r.HandleFunc("/report/hash", scanner.FetchReportHandler).Methods("GET")
 
 	// Start the server with CORS middleware
 	log.Println("Server started at http://localhost:8080")

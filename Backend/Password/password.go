@@ -5,6 +5,6 @@ import (
 	"net/http"
 )
 
-func HandleInput(w http.ResponseWriter, r *http.Request) {
+func HandleInputPassword(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Password")
 }

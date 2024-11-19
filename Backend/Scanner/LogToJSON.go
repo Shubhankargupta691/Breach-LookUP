@@ -6,7 +6,6 @@ import (
 	"os"
 )
 
-// logToJSONFile logs the request and response data to a JSON file.
 func logToJSONFile(data interface{}) {
 	file, err := os.OpenFile("log.json", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
 	if err != nil {

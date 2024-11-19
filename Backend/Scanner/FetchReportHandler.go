@@ -12,8 +12,7 @@ import (
 	"github.com/joho/godotenv"
 )
 
-// VirusTotalResponse defines the structure of the JSON response from VirusTotal
-type VirusTotalResponse struct {
+type FinalResponse struct {
 	Data struct {
 		ID    string `json:"id"`
 		Type  string `json:"type"`
@@ -78,7 +77,7 @@ type VirusTotalResponse struct {
 }
 
 func init() {
-	// Load environment variables from .env file
+
 	err := godotenv.Load(".env")
 	if err != nil {
 		log.Fatal("Error loading .env file")
@@ -86,7 +85,7 @@ func init() {
 }
 
 func FetchReportHandler(w http.ResponseWriter, r *http.Request) {
-	// Use the FRONTEND_URL environment variable
+
 	frontendURL := os.Getenv("FRONTEND_URL")
 	if frontendURL != "" {
 		fmt.Println("Env loaded successfully") // Default if not set
@@ -97,18 +96,16 @@ func FetchReportHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Methods", "GET")
 	w.Header().Set("Access-Control-Allow-Headers", "X-File-Hash")
 
-	// Load API key and URL from environment variables
-	APIKey := os.Getenv("API_KEY")
+	APIKey := os.Getenv("API_KEY_Scanner")
 	if APIKey == "" {
 		log.Fatal("API_KEY is not set in the .env file")
 	}
 
-	baseURL := os.Getenv("API_URL")
+	baseURL := os.Getenv("API_URL_Scanner")
 	if baseURL == "" {
 		log.Fatal("API_URL is not set in the .env file")
 	}
 
-	// Extract the file hash from the request header
 	hash := r.Header.Get("X-File-Hash")
 	if hash == "" {
 		http.Error(w, "File hash is missing", http.StatusBadRequest)
@@ -117,21 +114,17 @@ func FetchReportHandler(w http.ResponseWriter, r *http.Request) {
 
 	log.Printf("Received hash: %s", hash)
 
-	// Construct the URL for the VirusTotal API
 	url := fmt.Sprintf("%s/%s", baseURL, hash)
 
-	// Create a GET request to the VirusTotal API
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		http.Error(w, "Failed to create request", http.StatusInternalServerError)
 		return
 	}
 
-	// Set the headers for the API request
 	req.Header.Add("Content-Type", "application/json")
 	req.Header.Set("x-apikey", APIKey)
 
-	// Send the GET request to the VirusTotal API
 	res, err := http.DefaultClient.Do(req)
 	if err != nil {
 		http.Error(w, "Failed to fetch data from VirusTotal", http.StatusInternalServerError)
@@ -139,30 +132,25 @@ func FetchReportHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	defer res.Body.Close()
 
-	// Read the response body
 	body, err := io.ReadAll(res.Body)
 	if err != nil {
 		http.Error(w, "Failed to read response", http.StatusInternalServerError)
 		return
 	}
 
-	// Log the raw response body
 	log.Printf("Raw Response: %s", body)
 
-	// Unmarshal the JSON response into the VirusTotalResponse struct
-	var response VirusTotalResponse
+	var response FinalResponse
 	if err := json.Unmarshal(body, &response); err != nil {
 		http.Error(w, "Failed to parse response", http.StatusInternalServerError)
 		return
 	}
 
-	// Check if the report is still being processed
 	if response.Data.Attributes.LastAnalysisDate == 0 {
 		log.Println("Report not generated yet, retrying...")
-		// Wait for 3 seconds before checking again
+
 		time.Sleep(3 * time.Second)
 
-		// Retry fetching the report
 		FetchReportHandler(w, r)
 		return
 	}
@@ -173,6 +161,5 @@ func FetchReportHandler(w http.ResponseWriter, r *http.Request) {
 		"data":    response,
 	})
 
-	// Send the structured response back to the frontend
 	w.Write(body)
 }
