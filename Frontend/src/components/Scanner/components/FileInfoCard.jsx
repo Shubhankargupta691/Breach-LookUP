@@ -67,7 +67,7 @@ const FileInfoCard = ({ fileInfo, jsonData, searchInput }) => {
   return (
     <section>
       <div className="bg-gradient-to-r from-gray-800 to-gray-900 border border-gray-700 rounded-lg shadow-lg p-6 w-full max-w-5xl mx-auto mt-4 h-auto text-white flex flex-col">
-        <div className="flex justify-start items-center mb-4">
+        <div className="flex justify-start items-center mb-1">
           <p className="font-bold text-lg pr-4">Distributors:</p>
           <p className="font-bold">{renderDistributors()}</p>
         </div>
@@ -88,7 +88,7 @@ const FileInfoCard = ({ fileInfo, jsonData, searchInput }) => {
         </div>
         <hr className="hidden md:block text-gray-600 mt-4" />
 
-        <div className="flex justify-start items-center mb-4">
+        <div className="flex justify-start items-center mb-1">
           <div className="font-bold text-lg">{renderTags()}</div>
         </div>
       </div>

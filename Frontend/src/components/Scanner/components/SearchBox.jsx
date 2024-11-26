@@ -5,46 +5,44 @@ import FileInfoCard from './FileInfoCard';
 import uploadAndScan from './script/uploadAndScan';
 import Results from '../Results';
 import HashScan from "./script/HashScan";
+import { MaliciousGauge } from './Gauge'; // Updated import
 
 const SearchBox = () => {
   const [searchInput, setSearchInput] = useState("");
   const [fileInfo, setFileInfo] = useState(null);
   const [jsonData, setJsonData] = useState(null);
   const [isScanning, setIsScanning] = useState(false);
-  const [statusMessage, setStatusMessage] = useState(""); 
+  const [statusMessage, setStatusMessage] = useState("");
+
   const handleSearchChange = (event) => {
-   
     const inputValue = event.target.value.trim();
     setSearchInput(inputValue);
   };
-  
+
   const handleSearchSubmit = async (event) => {
-    event.preventDefault(); 
-    
+    event.preventDefault();
+
     if (!searchInput) {
       console.error("No input provided for hash scanning.");
       return;
     }
-  
+
     try {
-    
       setStatusMessage("Scanning hash...");
-      setJsonData(null); 
+      setJsonData(null);
       setIsScanning(true);
-  
-   
+
       await HashScan(searchInput, setJsonData);
-  
-      setStatusMessage("Scanning File. Please wait for the results.");
+
+      // setStatusMessage("Scan completed. Results are ready.");
     } catch (error) {
       console.error("Error during hash scanning:", error);
       setStatusMessage("Error occurred while scanning. Please try again.");
     } finally {
-      
       setIsScanning(false);
     }
   };
-  
+
   const handleFileUploadClick = () => {
     document.getElementById('fileUpload').click();
   };
@@ -54,7 +52,7 @@ const SearchBox = () => {
     if (file) {
       setFileInfo(file);
       setStatusMessage("File uploaded successfully");
-      setJsonData(null); 
+      setJsonData(null);
 
       setTimeout(() => {
         setStatusMessage("Scanning File. Please wait for the results.");
@@ -62,17 +60,21 @@ const SearchBox = () => {
 
       setIsScanning(true);
 
-  
-      await uploadAndScan(file, setJsonData);
-
-      setIsScanning(false); 
+      try {
+        await uploadAndScan(file, setJsonData);
+        setStatusMessage("Scan completed. Results are ready.");
+      } catch (error) {
+        setStatusMessage("Error occurred while scanning the file. Please try again.");
+      } finally {
+        setIsScanning(false);
+      }
     }
   };
 
-
   useEffect(() => {
     if (jsonData) {
-      setStatusMessage("");
+      setStatusMessage("");  // Clear status message when jsonData is received
+      console.log("jsonData:", jsonData); // Debugging line
     }
   }, [jsonData]);
 
@@ -134,22 +136,39 @@ const SearchBox = () => {
           </div>
         )}
 
-        {jsonData && ( 
-          <div className="flex flex-col justify-center items-center animate-fadeIn">
-            <FileInfoCard 
-              fileInfo={fileInfo} 
-              searchInput={fileInfo ? null : searchInput} 
-              jsonData={jsonData} 
-            />
-          </div>
-        )}
+{jsonData && (
+  <div 
+    className={`flex flex-col lg:flex-row ${
+      !window.matchMedia('(min-width: 1024px)').matches 
+        ? 'justify-center items-center' 
+        : 'justify-center items-start'
+    } animate-fadeIn transition-all duration-500 ease-in-out`}
+  >
+    <div 
+      className="hidden lg:flex flex-col w-60 h-64 m-4 transition-all duration-500 ease-in-out opacity-0 scale-0 lg:opacity-100 lg:scale-100"
+    >
+      {/* This `MaliciousGauge` appears only on large screens */}
+      <MaliciousGauge jsonData={jsonData} />
+    </div>
+    <div 
+      className="flex justify-center items-center w-full lg:w-auto transition-all duration-500 ease-in-out"
+    >
+      <FileInfoCard 
+        fileInfo={fileInfo} 
+        searchInput={fileInfo ? null : searchInput} 
+        jsonData={jsonData} 
+        className="w-60 h-64 m-4"
+      />
+    </div>
+  </div>
+)}
+
+
 
         <div className="flex w-full max-w-8xl mx-auto animate-fadeIn">
           {jsonData && <Results jsonData={jsonData} />}
         </div>
       </section>
-
-
     </>
   );
 };
