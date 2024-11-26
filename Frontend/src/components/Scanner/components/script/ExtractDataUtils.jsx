@@ -29,7 +29,7 @@ export function getFileDetails(jsonData, fileInfo, searchInput) {
 
   const nameData = jsonData?.data?.attributes;
   let  hash256 = jsonData?.data?.attributes?.sha256;
-  let fileName = fileInfo?.name || nameData?.trusted_verdict?.filename || nameData?.known_distributors?.filenames[0] || 'no information';
+  let fileName = fileInfo?.name || nameData?.names || nameData?.trusted_verdict?.filename || nameData?.known_distributors?.filenames[0] || 'no information';
 
     if(!hash256){
         hash256 = jsonData.data.attributes.sha256;
@@ -42,8 +42,8 @@ export function getFileDetails(jsonData, fileInfo, searchInput) {
 
   return {
     fileName: fileName,
-    fileSize: fileInfo ? (fileInfo.size / 1024).toFixed(2) + ' KB' : jsonData?.fileSize || 'no information',
-    fileExt: fileInfo ? fileInfo.name.split('.').pop() : jsonData?.fileExt || 'no information',
+    fileSize: fileInfo ? (fileInfo.size / 1024).toFixed(2) + ' KB' : (nameData?.size/1048576).toFixed(2) + ' MB' || 'no information',
+    fileExt: fileInfo ? fileInfo.name.split('.').pop() : nameData?.type_extension || 'no information',
     fileHash: hash256,
     lastAnalysisDate: lastAnalysisDate,
     detected: detectionValue,
