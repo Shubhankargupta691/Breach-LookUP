@@ -3,13 +3,20 @@ import React from 'react';
 export function getDetectionValue(jsonData) {
   if (jsonData?.data?.attributes?.last_analysis_stats) {
     const stats = jsonData.data.attributes.last_analysis_stats;
-    return (stats.suspicious || 0) + (stats.malicious || 0);
+    const totalValue = (stats.malicious || 0) + (stats.suspicious || 0);
+    return totalValue;
   }
   return 0;
 }
 
 export function getDistributorsList(jsonData) {
-  return jsonData?.data?.attributes?.known_distributors?.distributors?.map(distributor => distributor) || [];
+  const stats = jsonData?.data?.attributes?.known_distributors?.distributors;
+  const detected = getDetectionValue(jsonData);
+  const message = `${detected > 0 
+    ? `${detected} security vendors flagged this file as malicious` 
+    : 'No security vendors flagged this file as malicious'}`;
+  
+  return stats?.map(distributor => distributor) || [message];
 }
 
 export function getTagsList(jsonData) {
