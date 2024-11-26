@@ -20,27 +20,60 @@ type FinalResponse struct {
 			Self string `json:"self"`
 		} `json:"links"`
 		Attributes struct {
-			Magic                string   `json:"magic"`
-			TLSH                 string   `json:"tlsh"`
-			Authentihash         string   `json:"authentihash"`
-			Vhash                string   `json:"vhash"`
-			SHA1                 string   `json:"sha1"`
-			SHA256               string   `json:"sha256"`
-			MD5                  string   `json:"md5"`
-			SSDeep               string   `json:"ssdeep"`
-			Size                 int64    `json:"size"`
-			TypeDescription      string   `json:"type_description"`
-			TypeExtension        string   `json:"type_extension"`
-			TypeTag              string   `json:"type_tag"`
-			TypeTags             []string `json:"type_tags"`
-			Names                []string `json:"names"`
-			LastAnalysisDate     int64    `json:"last_analysis_date"`
-			FirstSubmissionDate  int64    `json:"first_submission_date"`
-			LastSubmissionDate   int64    `json:"last_submission_date"`
-			CreationDate         int64    `json:"creation_date"`
-			LastModificationDate int64    `json:"last_modification_date"`
-			Reputation           int      `json:"reputation"`
-			LastAnalysisStats    struct {
+			LastAnalysisResults map[string]struct {
+				Method        string `json:"method"`
+				EngineName    string `json:"engine_name"`
+				EngineVersion string `json:"engine_version"`
+				EngineUpdate  string `json:"engine_update"`
+				Category      string `json:"category"`
+				Result        string `json:"result"`
+			} `json:"last_analysis_results"`
+			Magic           string   `json:"magic"`
+			TLSH            string   `json:"tlsh"`
+			Authentihash    string   `json:"authentihash"`
+			Vhash           string   `json:"vhash"`
+			SHA1            string   `json:"sha1"`
+			SHA256          string   `json:"sha256"`
+			MD5             string   `json:"md5"`
+			SSDeep          string   `json:"ssdeep"`
+			Magika          string   `json:"magika"`
+			FileType        string   `json:"file_type"`
+			Size            int64    `json:"size"`
+			TypeDescription string   `json:"type_description"`
+			TypeExtension   string   `json:"type_extension"`
+			TypeTag         string   `json:"type_tag"`
+			TypeTags        []string `json:"type_tags"`
+			Names           []string `json:"names"`
+			NSRLInfo        struct {
+				Products  []string `json:"products"`
+				Filenames []string `json:"filenames"`
+			} `json:"nsrl_info"`
+			KnownDistributors struct {
+				Distributors []string `json:"distributors"`
+				Filenames    []string `json:"filenames"`
+				Products     []string `json:"products"`
+				DataSources  []string `json:"data_sources"`
+			} `json:"known_distributors"`
+			TrustedVerdict struct {
+				Organization string `json:"organization"`
+				Filename     string `json:"filename"`
+			} `json:"trusted_verdict"`
+			SandboxVerdicts struct {
+				Category              string   `json:"category"`
+				Confidence            int      `json:"confidence"`
+				SandboxName           string   `json:"sandbox_name"`
+				MalwareClassification []string `json:"malware_classification"`
+				MalwareNames          []string `json:"malware_names"`
+			} `json:"sandbox_verdicts"`
+			FirstSeenITWDate     int64 `json:"first_seen_itw_date"`
+			LastAnalysisDate     int64 `json:"last_analysis_date"`
+			FirstSubmissionDate  int64 `json:"first_submission_date"`
+			LastSubmissionDate   int64 `json:"last_submission_date"`
+			CreationDate         int64 `json:"creation_date"`
+			LastModificationDate int64 `json:"last_modification_date"`
+			Reputation           int   `json:"reputation"`
+
+			LastAnalysisStats struct {
 				Malicious        int `json:"malicious"`
 				Suspicious       int `json:"suspicious"`
 				Undetected       int `json:"undetected"`
@@ -139,6 +172,12 @@ type FinalResponse struct {
 					Values map[string]string `json:"values"`
 				} `json:"match_context"`
 			} `json:"sigma_analysis_results"`
+			OldAppsInfo struct {
+				Website   string `json:"website"`
+				OldApps   string `json:"oldapps"`
+				Product   string `json:"product"`
+				Developer string `json:"developer"`
+			} `json:"oldapps_info"`
 			Tags []string `json:"tags"`
 		} `json:"attributes"`
 	} `json:"data"`
