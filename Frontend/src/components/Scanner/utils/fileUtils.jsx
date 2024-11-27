@@ -1,5 +1,7 @@
-// fileUtils.js
-
+// fileUtils.jsx
+import { BasicInfo, History, KnownSources, Product, FileNames, OldAppsInfo, Names } from '../components/script/Results/Detection';
+import AnalysisResults from "../components/script/AnalysisResults";
+import DetectionResult from "../components/script/DetectionResult";
 /**
  * Hashes a file using SHA-256.
  * 
@@ -34,17 +36,41 @@ export default async function hashFile(file) {
   ];
   
 export const tabData = [
-  { id: 'details', label: 'Details' },
-  { id: 'detection', label: 'Detection' }
+  { id: 'details', label: 'Details', Component: AnalysisResults },
+  { id: 'detection', label: 'Detection', Component: DetectionResult },
 ];
 
 export const keyData = [
   { id: 'md5', label: 'MD5' },
-  { id: 'sha1', label: 'SHA1' },
-  { id: 'sha256', label: 'SHA256' },
+  { id: 'sha1', label: 'SHA-1' },
+  { id: 'sha256', label: 'SHA-256' },
+  { id: 'vhash', label: 'Vhash' },
+  { id: 'authentihash', label: 'Authentihash' },
+  { id: 'imphash', label: 'Imphash' },
   { id: 'ssdeep', label: 'SSDEEP' },
   { id: 'tlsh', label: 'TLSH' },
-  { id: 'file_type', label: 'File Type' },
+  { id: 'type_tags', label: 'File Type' },
   { id: 'magic', label: 'Magic' },
+  { id: 'trid', label: 'TrID' },
+  { id: 'detectiteasy', label: 'DetectItEasy' },
   { id: 'magika', label: 'Magika' },
+  { id: 'size', label: 'File Size' },
 ];
+
+
+  // Define all sections with corresponding data keys for conditional rendering
+  export const sections = [
+    { id: 'basicInfo', title: 'Basic Info', Component: BasicInfo },
+    { id: 'history', title: 'History', Component: History },
+    { id: 'names', title: 'Names', Component: Names },
+    { id: 'knownSources', title: 'Known Sources', Component: KnownSources },
+    { id: 'oldAppsInfo', title: 'Old Applications Info', Component: OldAppsInfo },
+  ];
+
+  // Define tabs for the NSRL info section
+  export const tabs = [
+    { name: 'Product', key: 'product', component: Product },
+    { name: 'FileNames', key: 'filenames', component: FileNames },
+  ];
+
+  

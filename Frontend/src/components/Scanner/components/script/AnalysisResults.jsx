@@ -1,57 +1,110 @@
 import React, { useState, useEffect } from "react";
+import { FaExclamationTriangle, FaQuestionCircle, FaCheckCircle } from "react-icons/fa"; 
+import {sortAnalysisResults} from "../../utils/sortUtils";
 
 const AnalysisResults = ({ jsonData }) => {
   const [analysisResults, setAnalysisResults] = useState([]);
 
+  const last_analysisResults = jsonData.data.attributes.last_analysis_results;
+  
   useEffect(() => {
-    if (jsonData && jsonData.data && jsonData.data.attributes && jsonData.data.attributes.last_analysis_results) {
-      const resultsArray = Object.entries(jsonData.data.attributes.last_analysis_results);
-      setAnalysisResults(resultsArray);
+    if (last_analysisResults) {
+      const resultsArray = Object.entries(last_analysisResults);
+      const sortedArray = sortAnalysisResults(resultsArray);
+      setAnalysisResults(sortedArray);
     } else {
       console.error("Invalid JSON structure");
     }
-  }, [jsonData]);
+  }, [last_analysisResults]);
+
+  // Helper function to render icons and category text
+  const renderCategory = (category, result) => {
+    let icon = null;
+    let displayText = result ? result : category;
+
+    if (category === "malicious") {
+      icon = <FaExclamationTriangle className="inline ml-2 text-red-500 mr-2" />;
+    } else if (category === "undetected" || category === "harmless") {
+      icon = <FaCheckCircle className="inline ml-2 text-green-500 mr-2" />;
+    } else if (category === "type-unsupported" || category === "failure" ) {
+      icon = <FaQuestionCircle className="inline ml-2 text-yellow-500 mr-2" />;
+      displayText = category === "type-unsupported" ? "Unable to process file type" : "Failed to Scan";
+    }
+    return (
+      <>
+        {icon}
+        {displayText}
+      </>
+    );
+  };
 
   return (
-    <div id="analysis-container" className="space-y-4  from-gray-800 bg-gray-900 border-spacing-0 border-gray-700 rounded-lg shadow-lg p-4">
-      {/* Grid Header Row */}
-      <div className="grid-cols-2 sm:grid-cols-4 gap-4 mb-2 flex text-center justify-around">
-        <div className="font-semibold text-center col-span-2 sm:col-span-1">Engine Name</div>
-        <div className="font-semibold text-center col-span-2 sm:col-span-1">Category</div>
-        <div className="hidden sm:block font-semibold text-center">Engine Name</div>
-        <div className="hidden sm:block font-semibold text-center">Category</div>
+    <>
+      <div className="text-lg font-semibold text-center mb-4">
+        Analysis Results
       </div>
+        <div id="analysis-container" className="bg-black rounded-lg shadow-lg p-6 text-sm">
+              {/* Table Header */}
+              <div className="grid grid-cols-2 md:grid-cols-12 gap-4 border-b border-gray-600 pb-2 mb-4">
+                <div className="col-span-1 md:col-span-3 font-semibold whitespace-nowrap text-left">Engine Name</div>
+                <div className="col-span-1 md:col-span-3 font-semibold whitespace-nowrap text-left">Category</div>
+                <div className="hidden md:block md:col-span-3 pl-5 font-semibold whitespace-nowrap text-left">Engine Name</div>
+                <div className="hidden md:block md:col-span-3 font-semibold whitespace-nowrap text-left">Category</div>
+              </div>
 
-   
-      {analysisResults.map(([key, result], index) => {
-        
-        const isEven = index % 2 === 0;
-        
-        if (isEven) {
-          return (
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 py-2" key={index}>
-              <div className="text-center">{result.engine_name}</div>
-              <div className="text-center">{result.category}</div>
-              {analysisResults[index + 1] ? (
-                <>
-                  <div className="text-center">{analysisResults[index + 1][1].engine_name}</div>
-                  <div className="text-center">{analysisResults[index + 1][1].category}</div>
-                </>
-              ) : (
-              
-                <>
-                  <div className="text-center"></div>
-                  <div className="text-center"></div>
-                </>
-              )}
-            </div>
-          );
-        }
+              {/* analysis results */}
+              {analysisResults.map(([key, result], index) => {
+                const isEven = index % 2 === 0;
 
-        return null;
-      })}
-    </div>
+                if (isEven) {
+                  return (
+                    <div
+                      className="grid grid-cols-2 md:grid-cols-12 gap-4 py-2 border-b border-gray-600 items-center transition-transform duration-200 ease-in-out hover:bg-gray-700"
+                      key={index}
+                    >
+                      {/* 1st Engine Name column */}
+                      <div className="col-span-1 md:col-span-3 pl-3 text-left whitespace-nowrap truncate">{result.engine_name}</div>
+
+                      {/* 1st Category column */}
+                      <div
+                        className="col-span-1 md:col-span-3 text-left whitespace-nowrap truncate"
+                        style={{ color: result.category === "malicious" ? "red" : "inherit" }}
+                      >
+                        {renderCategory(result.category, result.result)}
+                      </div>
+
+                      {/* 2nd Engine Name & Category column */}
+                      {analysisResults[index + 1] ? (
+                        <>
+                          <div className="hidden md:block md:col-span-3 pl-5 text-left whitespace-nowrap truncate">
+                            {analysisResults[index + 1][1].engine_name}
+                          </div>
+                          <div
+                            className="hidden md:block md:col-span-3 text-left whitespace-nowrap truncate"
+                            style={{
+                              color: analysisResults[index + 1][1].category === "malicious" ? "red" : "inherit",
+                            }}
+                          >
+                            {renderCategory(analysisResults[index + 1][1].category, analysisResults[index + 1][1].result)}
+                          </div>
+                        </>
+                      ) : (
+                        <>
+                          <div className="hidden md:block md:col-span-3 text-left"></div>
+                          <div className="hidden md:block md:col-span-3 text-left"></div>
+                        </>
+                      )}
+                    </div>
+                  );
+                }
+
+                return null;
+              })}
+        </div>
+        
+    </>
+
   );
-}
+};
 
 export default AnalysisResults;
