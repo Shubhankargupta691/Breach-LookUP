@@ -247,6 +247,8 @@ func FetchReportHandler(w http.ResponseWriter, r *http.Request) {
 
 	log.Printf("Raw Response: %s", body)
 
+	fmt.Println("Response received successfully") // Debugging
+
 	var response FinalResponse
 	if err := json.Unmarshal(body, &response); err != nil {
 		http.Error(w, "Failed to parse response", http.StatusInternalServerError)
@@ -268,5 +270,6 @@ func FetchReportHandler(w http.ResponseWriter, r *http.Request) {
 		"data":    response,
 	})
 
+	fmt.Println("-----------------------------------------------------------------")
 	w.Write(body)
 }
