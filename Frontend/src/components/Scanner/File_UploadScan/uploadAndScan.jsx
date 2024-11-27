@@ -1,6 +1,6 @@
-import hashFile from "../../utils/fileUtils";
+import hashFile from "../utils/fileUtils";
 
-import init from "./init";
+import init from "../components/script/init";
 
 
 export default async function uploadAndScan(file, setJsonData) {

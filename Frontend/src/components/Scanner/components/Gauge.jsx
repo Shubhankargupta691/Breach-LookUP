@@ -3,14 +3,14 @@ import { Gauge, gaugeClasses } from '@mui/x-charts/Gauge';
 import { colors } from '@mui/material';
 
 export function MaliciousGauge({ jsonData }) {
-  const malicious = jsonData?.data?.attributes?.last_analysis_stats?.malicious || 0;
-  const suspicious = jsonData?.data?.attributes?.last_analysis_stats?.suspicious || 0;
-  
-  const timeout = jsonData?.data?.attributes?.last_analysis_stats?.timeout || 0;
-  const failure = jsonData?.data?.attributes?.last_analysis_stats?.failure || 0;
-  const typeunsupported = jsonData?.data?.attributes?.last_analysis_stats?.['type-unsupported'] || 0;
+
+  const stats = jsonData?.data?.attributes?.last_analysis_stats || {};
+  const malicious = stats.malicious || 0;
+  const suspicious = stats.suspicious || 0;
+  const undetected = stats.undetected || 0;
+  const harmless = stats.harmless || 0;
   const totalValue = malicious + suspicious;
-  const maxValue = totalValue + timeout + failure + typeunsupported;
+  const maxValue = totalValue + undetected + harmless;
 
   useEffect(() => {
 

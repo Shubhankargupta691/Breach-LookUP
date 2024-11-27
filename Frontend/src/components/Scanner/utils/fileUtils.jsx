@@ -1,5 +1,7 @@
-// fileUtils.js
+// fileUtils.jsx
 import { BasicInfo, History, KnownSources, Product, FileNames, OldAppsInfo, Names } from '../components/script/Results/Detection';
+import AnalysisResults from "../components/script/AnalysisResults";
+import DetectionResult from "../components/script/DetectionResult";
 /**
  * Hashes a file using SHA-256.
  * 
@@ -34,8 +36,8 @@ export default async function hashFile(file) {
   ];
   
 export const tabData = [
-  { id: 'details', label: 'Details' },
-  { id: 'detection', label: 'Detection' }
+  { id: 'details', label: 'Details', Component: AnalysisResults },
+  { id: 'detection', label: 'Detection', Component: DetectionResult },
 ];
 
 export const keyData = [
@@ -70,3 +72,5 @@ export const keyData = [
     { name: 'Product', key: 'product', component: Product },
     { name: 'FileNames', key: 'filenames', component: FileNames },
   ];
+
+  

@@ -1,4 +1,4 @@
-import init from './init';
+import init from '../components/script/init';
 
 export default async function HashScan(searchInput, setJsonData) {
   if (!searchInput) {
