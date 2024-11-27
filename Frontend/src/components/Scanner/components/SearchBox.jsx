@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faUpload, faSyncAlt, faSpinner, faCheckCircle } from "@fortawesome/free-solid-svg-icons";
+import { MaliciousGauge } from './Gauge'; 
+import { detectInputType, getScanActions } from '../utils/scanUtils';
 import FileInfoCard from './FileInfoCard';
-import uploadAndScan from './script/uploadAndScan';
+import uploadAndScan from '../File_UploadScan/uploadAndScan';
 import Results from '../Results';
-import HashScan from "./script/HashScan";
-import { MaliciousGauge } from './Gauge'; // Updated import
+
 
 const SearchBox = () => {
   const [searchInput, setSearchInput] = useState("");
@@ -19,22 +20,32 @@ const SearchBox = () => {
     setSearchInput(inputValue);
   };
 
+  // Function to handle search on submit
   const handleSearchSubmit = async (event) => {
     event.preventDefault();
-
+  
     if (!searchInput) {
       console.error("No input provided for hash scanning.");
       return;
     }
+  
+    const { firstMatch: inputType } = detectInputType(searchInput);
+    console.log("Detected input type:", inputType); // Debugging line
 
+    setStatusMessage(`Scanning ${inputType}...`);
+    setJsonData(null);
+    setIsScanning(true);
+  
     try {
-      setStatusMessage("Scanning hash...");
-      setJsonData(null);
-      setIsScanning(true);
-
-      await HashScan(searchInput, setJsonData);
-
-      // setStatusMessage("Scan completed. Results are ready.");
+      const action = getScanActions(searchInput, setJsonData);
+      console.log("Action:", action); // Debugging line
+      
+      // Check if the action for the detected inputType exists and call it
+      if (action[inputType]) {
+        await action[inputType]();
+      } else {
+        setStatusMessage("Unsupported input type. Please try again.");
+      }
     } catch (error) {
       console.error("Error during hash scanning:", error);
       setStatusMessage("Error occurred while scanning. Please try again.");
@@ -42,10 +53,14 @@ const SearchBox = () => {
       setIsScanning(false);
     }
   };
+  
 
+  
+  // Function to handle file upload and scan
   const handleFileUploadClick = () => {
     document.getElementById('fileUpload').click();
   };
+
 
   const handleFileInfo = async () => {
     const file = document.getElementById("fileUpload").files[0];
@@ -124,6 +139,7 @@ const SearchBox = () => {
           </div>
         </div>
       </header>
+      {/* Spinner */}
       <section className="transition-opacity duration-500 ease-out mt-24">
         {statusMessage && (
           <div className="mt-4 flex items-center space-x-2 text-gray-300 animate-pulse">
@@ -135,36 +151,34 @@ const SearchBox = () => {
             <span className="text-lg">{statusMessage}</span>
           </div>
         )}
-
-{jsonData && (
-  <div 
-    className={`flex flex-col lg:flex-row ${
-      !window.matchMedia('(min-width: 1024px)').matches 
-        ? 'justify-center items-center' 
-        : 'justify-center items-start'
-    } animate-fadeIn transition-all duration-500 ease-in-out`}
-  >
-    <div 
-      className="hidden lg:flex flex-col w-60 h-64 m-4 transition-all duration-500 ease-in-out opacity-0 scale-0 lg:opacity-100 lg:scale-100"
-    >
-      {/* This `MaliciousGauge` appears only on large screens */}
-      <MaliciousGauge jsonData={jsonData} />
-    </div>
-    <div 
-      className="flex justify-center items-center w-full lg:w-auto transition-all duration-500 ease-in-out"
-    >
-      <FileInfoCard 
-        fileInfo={fileInfo} 
-        searchInput={fileInfo ? null : searchInput} 
-        jsonData={jsonData} 
-        className="w-60 h-64 m-4"
-      />
-    </div>
-  </div>
-)}
-
-
-
+        {/* Gauge and  FileInfoCard Section */}
+        {jsonData && (
+          <div 
+            className={`flex flex-col lg:flex-row ${
+              !window.matchMedia('(min-width: 1024px)').matches 
+                ? 'justify-center items-center' 
+                : 'justify-center items-start'
+            } animate-fadeIn transition-all duration-500 ease-in-out`}
+          >
+            <div 
+              className="hidden lg:flex flex-col w-60 h-64 m-4 transition-all duration-500 ease-in-out opacity-0 scale-0 lg:opacity-100 lg:scale-100"
+            >
+              {/* This `MaliciousGauge` appears only on large screens */}
+              <MaliciousGauge jsonData={jsonData} />
+            </div>
+            <div 
+              className="flex justify-center items-center w-full lg:w-auto transition-all duration-500 ease-in-out"
+            >
+              <FileInfoCard 
+                fileInfo={fileInfo} 
+                searchInput={fileInfo ? null : searchInput} 
+                jsonData={jsonData} 
+                className="w-60 h-64 m-4"
+              />
+            </div>
+          </div>
+        )}
+        {/* Results Section */}
         <div className="flex w-full max-w-8xl mx-auto animate-fadeIn">
           {jsonData && <Results jsonData={jsonData} />}
         </div>
