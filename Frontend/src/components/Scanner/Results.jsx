@@ -1,22 +1,8 @@
 import React, { useState } from "react";
-import AnalysisResults from "./components/script/AnalysisResults";
-import DetectionResult from "./components/script/DetectionResult";
 import { tabData } from "./utils/fileUtils";
 
 const Results = ({ jsonData }) => {
   const [activeTab, setActiveTab] = useState("details");
-
-  if (!jsonData) {
-    // Display "Generating Report..." with a loading indicator when jsonData is not yet available
-    return (
-      <div className="text-center mt-5">
-        <p>Generating Report...</p>
-        <div className="spinner-border" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="col w-full max-w-screen-xl mx-auto px-4">
@@ -40,49 +26,28 @@ const Results = ({ jsonData }) => {
 
       <div
         className="tab-content mt-3 position-relative"
-        style={{ height: "400px" }} // Set a fixed height for the tab content container
+        style={{ height: "400px" }}
       >
-        <div
-          className={`tab-pane ${
-            activeTab === "details" ? "active block" : "hidden"
-          }`}
-          id="details"
-          role="tabpanel"
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            visibility: activeTab === "details" ? "visible" : "hidden",
-            opacity: activeTab === "details" ? 1 : 0,
-            transition: "opacity 0.3s ease",
-          }}
-        >
-          <div id="report">
-            <AnalysisResults jsonData={jsonData} />
+        {tabData.map(({id, Component}) =>(
+          <div
+            key={id}
+            className={`tab-pane ${activeTab === id ? "active block" : "hidden"}`}
+            id={id}
+            role="tabpanel"
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              visibility: activeTab === id ? "visible" : "hidden",
+              opacity: activeTab === id ? 1 : 0,
+              transition: "opacity 0.3s ease",
+            }}
+          >
+              <Component jsonData={jsonData} />
           </div>
-        </div>
-
-        <div
-          className={`tab-pane ${
-            activeTab === "detection" ? "active block" : "hidden"
-          }`}
-          id="detection"
-          role="tabpanel"
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            visibility: activeTab === "detection" ? "visible" : "hidden",
-            opacity: activeTab === "detection" ? 1 : 0,
-            transition: "opacity 0.3s ease",
-          }}
-        >
-          <DetectionResult jsonData={jsonData} />
-        </div>
+        ))}
       </div>
     </div>
   );
