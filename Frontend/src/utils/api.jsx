@@ -1,5 +1,4 @@
-
-export const handleSearch  = async (input, endpoint, setResult, setError) => {
+const handleSearch  = async (input, endpoint, setResult, setError) => {
     try {
       const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/${endpoint}`, {
         method: 'POST',
@@ -19,4 +18,6 @@ export const handleSearch  = async (input, endpoint, setResult, setError) => {
       console.error('Error:', error);
     }
   };
+
+export default handleSearch;
   

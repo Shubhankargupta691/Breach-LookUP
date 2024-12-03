@@ -1,0 +1,2 @@
+
+export  {getFileDetails}  from './ExtractFileData';

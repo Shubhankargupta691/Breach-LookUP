@@ -3,9 +3,10 @@ import SearchBox from "./components/SearchBox";
 
 const Scanner = () => {
     return (
-        <div className="p-6">
-         <SearchBox />
+        <div className="flex items-center justify-center min-h-screen bg-black text-white p-5">
+            <SearchBox />
         </div>
+
     );
   
 }

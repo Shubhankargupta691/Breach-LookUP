@@ -2,11 +2,10 @@ import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faUpload, faSyncAlt, faSpinner, faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 import { MaliciousGauge } from './Gauge'; 
-import { detectInputType, getScanActions } from '../utils/scanUtils';
+import { detectInputType, getScanActions } from '../utils';
 import FileInfoCard from './FileInfoCard';
 import uploadAndScan from '../File_UploadScan/uploadAndScan';
 import Results from '../Results';
-
 
 const SearchBox = () => {
   const [searchInput, setSearchInput] = useState("");
@@ -54,13 +53,10 @@ const SearchBox = () => {
     }
   };
   
-
-  
   // Function to handle file upload and scan
   const handleFileUploadClick = () => {
     document.getElementById('fileUpload').click();
   };
-
 
   const handleFileInfo = async () => {
     const file = document.getElementById("fileUpload").files[0];
@@ -139,6 +135,7 @@ const SearchBox = () => {
           </div>
         </div>
       </header>
+
       {/* Spinner */}
       <section className="transition-opacity duration-500 ease-out mt-24">
         {statusMessage && (
@@ -151,7 +148,8 @@ const SearchBox = () => {
             <span className="text-lg">{statusMessage}</span>
           </div>
         )}
-        {/* Gauge and  FileInfoCard Section */}
+  
+        {/* Gauge and FileInfoCard Section */}
         {jsonData && (
           <div 
             className={`flex flex-col lg:flex-row ${
@@ -163,7 +161,7 @@ const SearchBox = () => {
             <div 
               className="hidden lg:flex flex-col w-60 h-64 m-4 transition-all duration-500 ease-in-out opacity-0 scale-0 lg:opacity-100 lg:scale-100"
             >
-              {/* This `MaliciousGauge` appears only on large screens */}
+              {/* This MaliciousGauge appears only on large screens */}
               <MaliciousGauge jsonData={jsonData} />
             </div>
             <div 
@@ -178,8 +176,9 @@ const SearchBox = () => {
             </div>
           </div>
         )}
+        
         {/* Results Section */}
-        <div className="flex w-full max-w-8xl mx-auto animate-fadeIn">
+        <div className="flex justify-center items-center w-full max-w-8xl mx-auto animate-fadeIn">
           {jsonData && <Results jsonData={jsonData} />}
         </div>
       </section>

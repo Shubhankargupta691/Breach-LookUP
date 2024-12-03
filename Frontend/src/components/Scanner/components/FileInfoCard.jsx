@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
+import "../../../App.css";
 import PropTypes from "prop-types";
-import { fileInfoData as baseFileInfoData } from "../utils/fileUtils";
-import { getFileDetails } from "./script/ExtractDataUtils";
+import { getFileDetails } from "./script/ExtractFileData";
+import { FaExclamationTriangle, FaCheckCircle } from "react-icons/fa";
+
+import {fileDetailsInfo, svgPaths } from "../utils";
 
 const FileInfoCard = ({ fileInfo, jsonData, searchInput }) => {
   const [fileDetails, setFileDetails] = useState({
@@ -42,15 +45,14 @@ const FileInfoCard = ({ fileInfo, jsonData, searchInput }) => {
   const renderTags = () => {
     const { tags } = fileDetails;
     if (tags.length === 0) {
-      return <p className="text-sm text-gray-400">No tags available</p>;
+      return null;
     }
-
     return (
       <div className="flex flex-wrap gap-2 mt-2">
         {tags.map((tag, index) => (
           <span
             key={index}
-            className="bg-gray-700 text-gray-200 px-2 py-1 rounded-md text-xs"
+            className="bg-gray-700 text-gray-200 px-2 py-1 rounded-md text-xs transition-all duration-200 hover:bg-gray-600"
           >
             {tag}
           </span>
@@ -59,40 +61,80 @@ const FileInfoCard = ({ fileInfo, jsonData, searchInput }) => {
     );
   };
 
-  const updatedFileInfoData = baseFileInfoData.map((item) => ({
-    ...item,
-    value: fileDetails[item.id] !== undefined ? fileDetails[item.id] : item.value,
-  }));
+  const renderCategory = () => {
+    return fileDetails.detected >= 0 ? (
+      <FaExclamationTriangle className="inline text-red-500 mr-1 text-[2vh] transition-all duration-200 transform hover:scale-110" />
+    ) : (
+      <FaCheckCircle className="inline text-green-500 mr-1 text-[2vh] transition-all duration-200 transform hover:scale-110" />
+    );
+  };
 
   return (
-    <section>
-      <div className="bg-gradient-to-r from-gray-800 to-gray-900 border border-gray-700 rounded-lg shadow-lg p-6 w-full max-w-5xl mx-auto mt-4 h-auto text-white flex flex-col">
-        <div className="flex justify-start items-center mb-1">
-          <p className="font-bold text-lg pr-4">Distributors:</p>
-          <p className="font-bold">{renderDistributors()}</p>
+    <div className="card transition-all duration-300 ease-in-out hover:shadow-2xl">
+      <div className="card-header flex flex-wrap justify-between gap-2">
+        <div className={`flex gap-2 font-bold ${fileDetails.detected >= 0 ? "text-red-500" : "text-gray-600"}`}>
+          <i className="text-4xl flex transition-all duration-200">{renderCategory()}</i>
+          <div className="font-bold flex items-center">
+            <p className="truncate transition-all duration-200">{renderDistributors()}</p>
+          </div>
         </div>
-
-        <hr className="hidden md:block text-gray-600 mt-1" />
-
-        <div className="flex flex-wrap lg:flex-nowrap gap-4 lg:gap-8">
-          {updatedFileInfoData.map((item, index) => (
-            <div key={index} className="flex flex-col lg:flex-row gap-1 lg:gap-2 items-start">
-              <p className="text-sm flex">
-                <span className="font-bold text-gray-400">{item.label}:</span>
-                <span id={item.id} className="text-gray-200 pl-2 ">
-                  {item.value}
-                </span>
-              </p>
-            </div>
+        <div className="flex items-center gap-4 fw-semibold">
+          {svgPaths.map((svg) => (
+            <a key={svg.id} id={svg.id} role="button" className="flex items-center gap-1 cursor-pointer">
+              <i className="text-lg">
+                <svg
+                  xmlns={svg.xmlns}
+                  width={svg.width}
+                  height={svg.height}
+                  viewBox={svg.viewBox}
+                  fill={svg.fill}
+                >
+                  <g>
+                    {svg.path.map((path, index) => (
+                      <path key={index} d={path} />
+                    ))}
+                  </g>
+                </svg>
+              </i>
+              Reanalyze
+            </a>
           ))}
         </div>
-        <hr className="hidden md:block text-gray-600 mt-4" />
+      </div>
 
-        <div className="flex justify-start items-center mb-1">
-          <div className="font-bold text-lg">{renderTags()}</div>
+      <div className="card-body flex transition-all duration-300 ease-in-out">
+        <div className="flex flex-col gap-2 my-auto min-w-0">
+          <div className="flex gap-4">
+            <div className="flex flex-col gap-2 align-self-center">
+              <div className="file-id truncate transition-all duration-200" title={fileDetails.fileHash}>
+                {fileDetails.fileHash}
+              </div>
+              <div className="file-name truncate transition-all duration-200" title={fileDetails.fileName}>
+                <a href="">{fileDetails.fileName}</a>
+              </div>
+            </div>
+            <div className="border-l border-gray-300 my-3"></div>
+            {fileDetailsInfo(fileDetails).map((detail, index) => (
+              <React.Fragment key={index}>
+                <div>
+                  <div className="text-gray-500">{detail.label}</div>
+                  <a href="" className="text-nowrap truncate transition-all duration-200" title={detail.title}>
+                    {detail.value}
+                  </a>
+                </div>
+                {index < fileDetailsInfo(fileDetails).length - 1 && <div className="border-l border-gray-300 my-3"></div>}
+              </React.Fragment>
+            ))}
+          </div>
         </div>
       </div>
-    </section>
+
+      <div className="flex gap-2 flex-wrap p-1">
+        <div className="flex justify-start items-center mb-1">
+          <div className="font-bold text-lg p-2">{renderTags()}</div>
+        </div>
+      </div>
+    </div>
   );
 };
 

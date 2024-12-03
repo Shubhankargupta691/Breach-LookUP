@@ -1,9 +1,7 @@
 
 import React, { useState } from 'react';
-import SearchBox from '../utils/SearchBox';
-import { handleSearch } from '../utils/api';
-import Results from '../components/password/Result';
-import Header from '../components/password/Header';
+import { handleSearch, SearchBox } from '../utils';
+import {Header, Results} from '../components/password';
 
 
 const Password = () => {

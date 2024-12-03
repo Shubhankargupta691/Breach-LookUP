@@ -1,4 +1,4 @@
-import { inputTypes } from "../utils/inputTypes";
+import { inputTypes } from "../utils";
 import {IP_Scan} from '../IP_Scanner/IP_Scan';
 import HashScan from '../Hash_Scanner/HashScan';
 
@@ -46,4 +46,4 @@ export function detectInputType(input) {
     },
   });
   
-  
+ 

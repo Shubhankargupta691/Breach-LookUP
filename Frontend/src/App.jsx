@@ -1,13 +1,10 @@
 // src/App.jsx
 import React, { useState } from 'react';
 import Navbar from './components/Navbar';
-import Email from './page/Email';
-import Password from './page/Password';
+import {Email, Password, ScanForm,Privacy, FAQs } from './page';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css'
-import Privacy from './page/Privacy';
-import FAQs from './page/FAQs';
-import ScanForm from './page/ScanForm';
+
 
 
 const App = () => {

@@ -1,9 +1,7 @@
 
 import React, { useState } from 'react';
-import SearchBox from '../utils/SearchBox';
-import Results from '../components/email/Result';
-import Header from '../components/email/Header';
-import { handleSearch } from '../utils/api';
+import { handleSearch, SearchBox } from '../utils';
+import {Header, Results} from '../components/email';
 
 
 const Email = () => {
