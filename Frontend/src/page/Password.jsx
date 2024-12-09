@@ -14,7 +14,7 @@ const Password = () => {
     };
   
       return (
-          <div className="flex flex-col items-center justify-center min-h-screen bg-black text-white p-5">
+          <div className="flex flex-col items-center justify-center min-h-screen bg-[#060720] text-white p-5">
               <Header />
               <SearchBox onSubmit={onSubmitSearch} />
               {error && <div className="text-red-500 mt-4">{error}</div>} {/* Display error message if any */}
