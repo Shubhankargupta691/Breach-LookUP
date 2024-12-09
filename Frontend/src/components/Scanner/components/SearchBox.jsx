@@ -4,7 +4,7 @@ import { faSearch, faUpload, faSyncAlt, faSpinner, faCheckCircle } from "@fortaw
 import { MaliciousGauge } from './Gauge'; 
 import { detectInputType, getScanActions } from '../utils';
 import FileInfoCard from './FileInfoCard';
-import uploadAndScan from '../File_UploadScan/uploadAndScan';
+import {uploadAndScan} from '../File_UploadScan';
 import Results from '../Results';
 
 const SearchBox = () => {
@@ -13,6 +13,7 @@ const SearchBox = () => {
   const [jsonData, setJsonData] = useState(null);
   const [isScanning, setIsScanning] = useState(false);
   const [statusMessage, setStatusMessage] = useState("");
+  const [InputType, setInputType] = useState("");
 
   const handleSearchChange = (event) => {
     const inputValue = event.target.value.trim();
@@ -29,6 +30,7 @@ const SearchBox = () => {
     }
   
     const { firstMatch: inputType } = detectInputType(searchInput);
+    setInputType(inputType);
     console.log("Detected input type:", inputType); // Debugging line
 
     setStatusMessage(`Scanning ${inputType}...`);
@@ -42,16 +44,20 @@ const SearchBox = () => {
       // Check if the action for the detected inputType exists and call it
       if (action[inputType]) {
         await action[inputType]();
+        console.log("INPUT TYPE:", InputType); // Debugging line
       } else {
         setStatusMessage("Unsupported input type. Please try again.");
       }
     } catch (error) {
       console.error("Error during hash scanning:", error);
       setStatusMessage("Error occurred while scanning. Please try again.");
-    } finally {
+    } 
+    finally {
       setIsScanning(false);
     }
+  
   };
+
   
   // Function to handle file upload and scan
   const handleFileUploadClick = () => {
@@ -93,9 +99,10 @@ const SearchBox = () => {
     console.log("Reanalyze initiated");
   };
 
+
   return (
     <>
-      <header className="absolute top-16 left-1/2 transform -translate-x-1/2 w-[90%] sm:w-[60%] max-w-full mt-3 flex">
+      <header className="absolute top-[10px] left-1/2 transform -translate-x-1/2 w-full my-5 flex">  
         <div className="bg-gray-900 border-spacing-0 border-gray-700 rounded-lg shadow-lg p-1 mt-2 w-full max-w-8xl mx-auto text-white">
           <div className="flex flex-col sm:flex-row items-center py-1/2 pe-3 w-full gap-3 transition-all duration-300 ease-in-out">
             <div className="flex items-center gap-4 w-full justify-end">
@@ -137,7 +144,7 @@ const SearchBox = () => {
       </header>
 
       {/* Spinner */}
-      <section className="transition-opacity duration-500 ease-out mt-24">
+      <section className="transition-opacity duration-500 ease-out mt-[120px]">
         {statusMessage && (
           <div className="mt-4 flex items-center space-x-2 text-gray-300 animate-pulse">
             {statusMessage === "File uploaded successfully" ? (
@@ -159,31 +166,33 @@ const SearchBox = () => {
             } animate-fadeIn transition-all duration-500 ease-in-out`}
           >
             <div 
-              className="hidden lg:flex flex-col w-60 h-64 m-4 transition-all duration-500 ease-in-out opacity-0 scale-0 lg:opacity-100 lg:scale-100"
+              className="hidden lg:flex flex-col mr-2 transition-all duration-500 ease-in-out opacity-0 scale-0 lg:opacity-100 lg:scale-100 shadow-black rounded-lg"
             >
               {/* This MaliciousGauge appears only on large screens */}
               <MaliciousGauge jsonData={jsonData} />
             </div>
             <div 
-              className="flex justify-center items-center w-full lg:w-auto transition-all duration-500 ease-in-out"
+              className="flex justify-center items-center w-full lg:w-full transition-all duration-500 ease-in-out"
             >
               <FileInfoCard 
                 fileInfo={fileInfo} 
-                searchInput={fileInfo ? null : searchInput} 
                 jsonData={jsonData} 
-                className="w-60 h-64 m-4"
+                InputType={InputType}
+                className="w-full"
               />
             </div>
           </div>
         )}
+
         
         {/* Results Section */}
-        <div className="flex justify-center items-center w-full max-w-8xl mx-auto animate-fadeIn">
+        <div className="flex justify-center items-center w-full max-w-full mx-auto animate-fadeIn">
           {jsonData && <Results jsonData={jsonData} />}
         </div>
       </section>
     </>
   );
 };
+
 
 export default SearchBox;
