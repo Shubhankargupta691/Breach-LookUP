@@ -1,6 +1,6 @@
 import React from 'react';
 import SectionWrapper from '../../Shared/SectionWrapper';
-import { extractHistoryData, dateFields} from '../../../utils/'; 
+import { extractAllData, dateFields} from '../../../utils/'; 
 
 const formatDate = (timestamp) => {
   if (!timestamp) return 'null';
@@ -9,11 +9,11 @@ const formatDate = (timestamp) => {
 };
 
 const History = ({ jsonData }) => {
-  const historyData = extractHistoryData(jsonData); 
+  const historyData = extractAllData(jsonData).historyData; 
 
   return (
     <SectionWrapper>
-      <div className="bg-gray-900 rounded-lg shadow-md">
+      <div className="rounded-lg shadow-md">
         <div className="max-h-screen overflow-auto scrollbar-hide space-y-2">
           {dateFields.map((key, index) => {
             const value = historyData[key.id];

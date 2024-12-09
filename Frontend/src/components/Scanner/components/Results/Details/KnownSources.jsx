@@ -1,19 +1,19 @@
 import React from 'react';
 import SectionWrapper from '../../Shared/SectionWrapper';
-import { extractKnownSources } from '../../../utils/';
-
+import { extractAllData } from '../../../utils/';
 
 const KnownSources = ({ jsonData }) => {
-  const trustedVerdict = extractKnownSources(jsonData);
+  const { knownSources } = extractAllData(jsonData);
 
-  if (Object.keys(trustedVerdict).length === 0) {
+  // If knownSources is empty or null, don't render anything
+  if (!knownSources || Object.keys(knownSources).length === 0) {
     return null;
   }
 
   return (
     <SectionWrapper>
-      {Object.entries(trustedVerdict).map(([key, value], index) => (
-        <div key={index} className="flex">
+      {Object.entries(knownSources).map(([key, value]) => (
+        <div key={key} className="flex">
           <span className="text-gray-400 font-semibold w-32">{key}:</span>
           <span className="text-gray-200">{value}</span>
         </div>

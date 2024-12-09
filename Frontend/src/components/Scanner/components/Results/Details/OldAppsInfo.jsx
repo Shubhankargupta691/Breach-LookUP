@@ -1,9 +1,9 @@
 import React from 'react';
 import SectionWrapper from '../../Shared/SectionWrapper';
-import { extractOldAppsInfo } from '../../../utils';
+import { extractAllData } from '../../../utils';
 
 const OldAppsInfo = ({ jsonData }) => {
-  const oldAppsData = extractOldAppsInfo(jsonData); 
+  const oldAppsData = extractAllData(jsonData).oldAppsInfo; 
 
   if (Object.keys(oldAppsData).length === 0) {
     return null;

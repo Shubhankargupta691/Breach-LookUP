@@ -1,9 +1,9 @@
 import React from 'react';
 import SectionWrapper from '../../Shared/SectionWrapper';
-import { extractProduct } from '../../../utils';
+import { extractAllData } from '../../../utils';
 
 const Product = ({ jsonData }) => {
-  const productData = extractProduct(jsonData) 
+  const productData = extractAllData(jsonData).product; 
 
   if (productData.length === 0) {
     return null;

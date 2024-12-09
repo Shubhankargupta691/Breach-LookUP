@@ -1,9 +1,9 @@
 import React from 'react';
 import SectionWrapper from '../../Shared/SectionWrapper';
-import { extractNames } from '../../../utils/';
+import { extractAllData } from '../../../utils/';
 
 const Names = ({ jsonData }) => {
-  const namesData = extractNames(jsonData);
+  const namesData = extractAllData(jsonData).names;
 
   if (namesData.length === 0) {
     return null;
