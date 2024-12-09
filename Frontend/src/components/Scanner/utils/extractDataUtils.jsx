@@ -1,65 +1,44 @@
 // Desc: This file contains the utility functions to extract the data from the JSON response of the API.
 
-export const extractBasicInfo = (jsonData) => {
-    return jsonData?.data?.attributes || {};
+export const extractAllData = (jsonData) => {
+    const attribute = jsonData?.data?.attributes || {};
+
+    return {
+        basicInfo: attribute,
+        sha256: attribute.sha256 || '',
+        historyData: attribute || {},
+        names: attribute.names || [],
+        size: attribute.size || 0.0,
+        extension: attribute.type_extension || '',
+        knownSources: attribute.trusted_verdict || {},
+        oldAppsInfo: attribute.oldapps_info || {},
+        nsrlInfo: attribute.nsrl_info || {},
+        product: attribute.nsrl_info?.products || [],
+        fileNames: attribute.nsrl_info?.filenames || [],
+        lastAnalysisResults: attribute.last_analysis_results || {},
+        lastAnalysisStats: attribute.last_analysis_stats || {},
+        lastAnalysisDate: attribute.last_analysis_date || {},
+        distributors: attribute.known_distributors?.distributors || [],
+        tags: attribute.tags || [],
+    };
 };
 
-export const extractHistoryData = (jsonData) => {
-    return jsonData?.data?.attributes || {};
+
+export const extractIP_Details = (jsonData) => {
+    const attribute = jsonData?.data?.attributes || {};
+    const networkIP = jsonData?.data?.id || '';
+
+    return {
+        networkID : networkIP,
+        networkName : attribute?.network || {},
+        ASN : attribute?.asn || '',
+        ASOwner : attribute?.as_owner || '',
+        continent : attribute?.continent || '',
+        country : attribute?.country || '',
+        lastAnalysisDate : attribute?.last_analysis_date || '',
+        lastAnalysisStats: attribute.last_analysis_stats || {},
+        lastAnalysisResults: attribute.last_analysis_results || {},
+        whois: attribute.whois || '',
+        Regional_Internet_Registry : attribute.regional_internet_registry || '',
+    };
 };
-  
-export const extractNames = (jsonData) => {
-    return jsonData?.data?.attributes?.names || [];
-};
-
-export const extractKnownSources = (jsonData) => {
-    return jsonData?.data?.attributes?.trusted_verdict || {};
-};
-
-export const extractOldAppsInfo = (jsonData) => {
-    return  jsonData?.data?.attributes?.oldapps_info || {};
-};
-
-export const extractProduct = (jsonData) => {
-    return  jsonData?.data?.attributes?.nsrl_info?.products || [];
-};
-
-
-export const extractFileNames = (jsonData) => {
-    return jsonData?.data?.attributes?.nsrl_info?.filenames || [];
-};
-
-export const extractAnalysis = (jsonData) => {
-    return jsonData.data.attributes.last_analysis_results;
-};
-
-// Extracts the last analysis stats from the JSON data for FileCardData component
-export const extractLastAnalysisStats = (jsonData) => {
-    const analysis = jsonData.data.attributes.last_analysis_stats || {};
-    return analysis;
-};
-
-export const extractTimeStamps = (jsonData) => {
-    return jsonData?.data?.attributes?.last_analysis_date || {};
-};
-
-// Extracts the Distributors from the JSON data for FileCardData component
-export const extractDistributors = (jsonData) => {
-    return jsonData?.data?.attributes?.known_distributors?.distributors || null;
-};
-
-export const extractTags = (jsonData) => {
-    return jsonData?.data?.attributes?.tags || [];
-};
-
-// export const extractIP_Details = (jsonData || searchInput) => {
-//     const data = jsonData?.data?.attributes || {};
-//     const netorkID = jsonData?.data?.id || searchInput || '';
-//     const network = data?.network || {};
-//     const country = data?.country || '';
-//     const continent = data?.continent || '';
-//     const ASN = data?.asn || '';
-//     const ASOwner = data?.as_owner || '';
-
-//     return {network, country, continent, ASN, ASOwner, netorkID};
-// };
