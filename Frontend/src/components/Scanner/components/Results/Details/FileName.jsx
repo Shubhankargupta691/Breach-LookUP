@@ -1,9 +1,9 @@
 import React from 'react';
 import SectionWrapper from '../../Shared/SectionWrapper';
-import { extractFileNames } from '../../../utils/';
+import { extractAllData } from '../../../utils/';
 
 const FileNames = ({ jsonData }) => {
-  const filenames = extractFileNames(jsonData);
+  const filenames = extractAllData(jsonData).fileNames;
 
   if (filenames.length === 0) {
     return null;
