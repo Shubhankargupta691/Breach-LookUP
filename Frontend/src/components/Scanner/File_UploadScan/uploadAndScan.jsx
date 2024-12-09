@@ -1,6 +1,6 @@
-import hashFile from "../utils/fileUtils";
-
-import init from "../components/script/init";
+// Code to upload a file scan it and fetch report using the ReportFetcher function.
+import {hashFile} from "../utils";
+import ReportFetcher from "../components/script/ReportFetcher";
 
 
 export default async function uploadAndScan(file, setJsonData) {
@@ -41,13 +41,13 @@ export default async function uploadAndScan(file, setJsonData) {
 
     setTimeout(async () => {
       try {
-        console.log("Sending hash to init function...");
+        console.log("Sending hash to ReportFetcher function...");
 
-        await init(File_Hash_SHA256, setJsonData);
+        await ReportFetcher(File_Hash_SHA256, setJsonData);
 
         console.log("Report generation started...");
-      } catch (initError) {
-        console.error("Error during report generation:", initError);
+      } catch (ReportFetcherError) {
+        console.error("Error during report generation:", ReportFetcherError);
       }
     }, 1000);
   } catch (error) {

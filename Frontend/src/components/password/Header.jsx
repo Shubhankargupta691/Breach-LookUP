@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { PassHeader } from '../../utils/items';
+import { PassHeader } from '../../utils';
 
 const Header = () => {
     return (
@@ -20,5 +20,5 @@ const Header = () => {
     );
 }
 
-export default Header
+export default Header;
 

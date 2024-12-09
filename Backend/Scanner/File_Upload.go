@@ -61,6 +61,8 @@ func UploadFileHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	writer.Close()
 
+	log.Println("File received and being sent to the server for scanning.")
+
 	req, err := http.NewRequest("POST", APIUrl, body)
 	if err != nil {
 		http.Error(w, fmt.Sprintf("Error creating request: %v", err), http.StatusInternalServerError)
@@ -84,13 +86,13 @@ func UploadFileHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	log.Println("--------------------------------------------------")
+
 	var result map[string]interface{}
 	if err := json.Unmarshal(bodyResp, &result); err != nil {
 		http.Error(w, fmt.Sprintf("Error parsing response: %v", err), http.StatusInternalServerError)
 		return
 	}
-
-	log.Printf("Scan result: %+v\n", result)
 
 	logToJSONFile(map[string]interface{}{
 		"status":  "success",

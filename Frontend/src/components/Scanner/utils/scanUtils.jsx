@@ -1,7 +1,6 @@
-import { inputTypes } from "../utils/inputTypes";
-import {IP_Scan} from '../IP_Scanner/IP_Scan';
+import { inputTypes } from "../utils";
+import {IP_Scan} from '../IP_Scanner';
 import HashScan from '../Hash_Scanner/HashScan';
-
 
 export function detectInputType(input) {
     
@@ -45,5 +44,3 @@ export function detectInputType(input) {
       console.log("Performing URL scan...");
     },
   });
-  
-  

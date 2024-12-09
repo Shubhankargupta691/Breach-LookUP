@@ -1,4 +1,4 @@
-import init from '../components/script/init';
+import ReportFetcher from '../components/script/ReportFetcher';
 
 export default async function HashScan(searchInput, setJsonData) {
   if (!searchInput) {
@@ -7,9 +7,9 @@ export default async function HashScan(searchInput, setJsonData) {
   }
 
   try {
-    console.log("Sending hash to init function...");
+    console.log("Sending hash to ReportFetcher function...");
     console.log("Hash:", searchInput);
-    await init(searchInput, setJsonData);
+    await ReportFetcher(searchInput, setJsonData);
     console.log("Report generation started...");
   } catch (error) {
     console.error("Error during report generation:", error);

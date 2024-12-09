@@ -5,9 +5,9 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Fade from '@mui/material/Fade';
-import { sections, tabs } from '../../utils/fileUtils';
+import { sections, tabs } from '../../../utils/';
 
-const DetectionResult = ({ jsonData }) => {
+const DetailsResult = ({ jsonData }) => {
   const [expanded, setExpanded] = useState(false);
   const [activeTab, setActiveTab] = useState('product');
 
@@ -26,33 +26,35 @@ const DetectionResult = ({ jsonData }) => {
   };
 
   const filteredSections = sections.filter(({ Component }) => hasContent(Component));
-
   const filteredTabs = tabs.filter(({ component: TabComponent }) => hasContent(TabComponent));
 
   const renderAccordion = (id, title, Component) => (
-    <div
-      key={id}
-      className={`rounded-lg border border-white shadow-lg shadow-blue-500/50 mb-4 ${
-        expanded === id ? 'bg-gray-900' : 'bg-black'
-      }`}
-    >
-      <Accordion
-        expanded={expanded === id}
-        onChange={handleAccordionChange(id)}
-        className="bg-transparent text-white"
+    hasContent(Component) && (
+      <div
+        key={id}
+        className={`rounded-lg mb-2 shadow-lg shadow-blue-500/50 ${
+          expanded === id ? 'bg-gray-900' : 'bg-[#151515]'
+        }`}
       >
-        <AccordionSummary expandIcon={<ExpandMoreIcon className="text-white" />} id={`${id}-header`}>
-          <Typography className="text-base sm:text-lg">{title}</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Fade in={expanded === id} timeout={400}>
-            <div>
-              <Component jsonData={jsonData} />
-            </div>
-          </Fade>
-        </AccordionDetails>
-      </Accordion>
-    </div>
+        <Accordion
+          expanded={expanded === id}
+          onChange={handleAccordionChange(id)}
+          className="bg-transparent text-white"
+          sx={{ padding: '0', margin: '0' }}
+        >
+          <AccordionSummary expandIcon={<ExpandMoreIcon className="text-white" />} id={`${id}-header`}>
+            <Typography className="text-base sm:text-lg">{title}</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Fade in={expanded === id} timeout={400}>
+              <div>
+                <Component jsonData={jsonData} />
+              </div>
+            </Fade>
+          </AccordionDetails>
+        </Accordion>
+      </div>
+    )
   );
 
   const renderTabs = () => (
@@ -84,16 +86,17 @@ const DetectionResult = ({ jsonData }) => {
       <div className="max-w-4xl mx-auto space-y-4">
         {filteredSections.map(({ id, title, Component }) => renderAccordion(id, title, Component))}
 
-        {filteredTabs.length > 0 && (
+        {filteredTabs.length > 0 && filteredTabs.some(({ component: TabComponent }) => hasContent(TabComponent)) && (
           <div
-            className={`rounded-lg border border-white shadow-lg shadow-blue-500/50 mb-4 ${
-              expanded === 'nsrl' ? 'bg-gray-900' : 'bg-black'
+            className={`rounded-lg mb-2 shadow-lg shadow-blue-500/50 ${
+              expanded === 'nsrl' ? 'bg-gray-900' : 'bg-[#151515]'
             }`}
           >
             <Accordion
               expanded={expanded === 'nsrl'}
               onChange={handleAccordionChange('nsrl')}
               className="bg-transparent text-white"
+              sx={{ padding: '0', margin: '0' }}
             >
               <AccordionSummary expandIcon={<ExpandMoreIcon className="text-white" />} id="nsrl-header">
                 <Typography className="text-base sm:text-lg">National Software Reference Library Info</Typography>
@@ -111,4 +114,4 @@ const DetectionResult = ({ jsonData }) => {
   );
 };
 
-export default DetectionResult;
+export default DetailsResult;
