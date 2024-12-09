@@ -1,9 +1,9 @@
 import React from 'react';
 import SectionWrapper from '../../Shared/SectionWrapper';
-import { extractBasicInfo, keyData } from '../../../utils/';
+import { extractAllData, keyData } from '../../../utils/';
 
 const BasicInfo = ({ jsonData }) => {
-  const attributes = extractBasicInfo(jsonData);
+  const attributes = extractAllData(jsonData).basicInfo;
 
   const renderMultiValues = (attributeId) => {
     const maxItemsToShow = 5;
