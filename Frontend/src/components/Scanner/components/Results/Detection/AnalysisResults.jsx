@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { FaExclamationTriangle, FaQuestionCircle, FaCheckCircle } from "react-icons/fa"; 
-import {sortAnalysisResults, extractAnalysis} from "../../../utils";
+import {sortAnalysisResults, extractAllData} from "../../../utils";
 
 const AnalysisResults = ({ jsonData }) => {
   const [analysisResults, setAnalysisResults] = useState([]);
 
-  const last_analysisResults = extractAnalysis(jsonData); 
+  const last_analysisResults = extractAllData(jsonData).lastAnalysisResults;
   
   useEffect(() => {
     if (last_analysisResults) {
@@ -29,6 +29,8 @@ const AnalysisResults = ({ jsonData }) => {
     } else if (category === "type-unsupported" || category === "failure" ) {
       icon = <FaQuestionCircle className="inline ml-2 text-yellow-500 mr-2" />;
       displayText = category === "type-unsupported" ? "Unable to process file type" : "Failed to Scan";
+    }else if (category === "suspicious") {
+      icon = <FaExclamationTriangle className="inline ml-2 text-yellow-500 mr-2" />;
     }
     return (
       <>
