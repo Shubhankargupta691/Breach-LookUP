@@ -3,9 +3,9 @@ import SearchBox from "./components/SearchBox";
 
 const Scanner = () => {
     return (
-    <>
-        <SearchBox />
-    </>
+        <>
+            <SearchBox />
+        </>
     );
   
 }
