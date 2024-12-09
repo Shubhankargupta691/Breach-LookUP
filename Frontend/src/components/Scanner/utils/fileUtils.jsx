@@ -1,6 +1,8 @@
 // fileUtils.jsx
-import { BasicInfo, History, KnownSources, Product, FileNames, OldAppsInfo, Names, DetailsResult } from '../components/Results/Details';
-import { AnalysisResults } from '../components/Results/Detection';
+import React from 'react';
+import {BasicInfo, History, KnownSources, Product, FileNames, OldAppsInfo,  Names, DetailsResult, AnalysisResults, Relations, Associations, Behaviour,Community} from '../components/Results';
+import { getFileDetails, getIPDetails } from '../components/script';
+
 
 /**
  * Hashes a file using SHA-256.
@@ -25,18 +27,72 @@ export default async function hashFile(file) {
   }
   
 
- 
-export const fileDetailsInfo = (fileDetails) => [
-  { label: "Size", value: fileDetails.fileSize, id: 'fileSize' },
-  { label: "Last Analysis Date", value: fileDetails.lastAnalysisDate, id: 'lastAnalysisDate' },
-  { label: "File Extension", value: fileDetails.fileExt, id: 'fileExt' },
 
-];
+
+export const OtherDetails =  {
+  File: {
+    data: [
+      { label: "Size" , id: 'fileSize' },
+      { label: "Last Analysis Date", id: 'lastAnalysisDate' },
+      { label: "File Extension",  id: 'fileExt' },
+    ],
+    getDetails: getFileDetails,
+  },
+  Hash: {
+    data: [
+      { label: "Size" , id: 'fileSize' },
+      { label: "Last Analysis Date", id: 'lastAnalysisDate' },
+      { label: "File Extension",  id: 'fileExt' },
+    ],
+    getDetails: getFileDetails,
+  },
+    IP: {
+      data: [
+        {label: 'Country Code', id: 'countryCode'},
+        {label: 'Country', id: 'Country'},
+        {label: 'Flag', id: 'flag'},
+        { label: "Last Analysis Date", id: 'lastAnalysisDate' },
+      ],
+      getDetails: getIPDetails,
+    }
+};
+
+export const NameAndID = {
+  File: {
+    data: [
+      { label: 'fileHash', id: 'fileHash' },
+      { label: 'fileName', id: 'fileName' },
+    ],
+    getDetails: getFileDetails,
+  },
+  Hash: {
+    data: [
+      { label: 'fileHash', id: 'fileHash' },
+      { label: 'fileName', id: 'fileName' },
+    ],
+    getDetails: getFileDetails,
+  },
+  IP: {
+    data: [
+      { label: 'ID', id: 'networkID' },
+      { label: 'Network', id: 'networkName' },
+      { label: 'Continent', id: 'continent' },
+      { label: 'ASN', id: 'ASN' },
+      { label: 'ASOwner', id: 'ASOwner' },
+    ],
+    getDetails: getIPDetails,
+  },
+};
+
 
 
 export const tabData = [
   { id: 'detection', label: 'Detection', Component: AnalysisResults},
   { id: 'details', label: 'Details', Component: DetailsResult},
+  { id: 'relation', label: 'Relation', Component: Relations},
+  { id: 'association', label: 'Association', Component: Associations},
+  { id: 'behaviour', label: 'Behaviour', Component: Behaviour},
+  { id: 'community', label: 'Community', Component: Community},
 ];
 
 export const keyData = [
@@ -46,7 +102,7 @@ export const keyData = [
   { id: 'vhash', label: 'Vhash' },
   { id: 'authentihash', label: 'Authentihash' },
   { id: 'imphash', label: 'Imphash' },
-  {id: 'permhash', label: 'Permhash'},
+  { id: 'permhash', label: 'Permhash'},
   { id: 'ssdeep', label: 'SSDEEP' },
   { id: 'tlsh', label: 'TLSH' },
   { id: 'type_tags', label: 'File Type' },
@@ -55,23 +111,22 @@ export const keyData = [
   { id: 'detectiteasy', label: 'DetectItEasy' },
   { id: 'magika', label: 'Magika' },
   { id: 'size', label: 'File Size' },
-  {id: 'network', label: 'Network'},
-  {id: 'asn', label: 'Autonomous System Number'},
-  {id: 'country', label: 'Country'},
-  {id: 'continent', label: 'Continent'},
-  {id: 'as_owner', label: 'Autonomous System Label'},
-  {id: 'regional_internet_registry', label: 'Regional Internet Registry'}
+  { id: 'network', label: 'Network'},
+  { id: 'asn', label: 'Autonomous System Number'},
+  { id: 'country', label: 'Country'},
+  { id: 'continent', label: 'Continent'},
+  { id: 'as_owner', label: 'Autonomous System Label'},
+  { id: 'regional_internet_registry', label: 'Regional Internet Registry'}
 ];
 
 
   // Define all sections with corresponding data keys for conditional rendering
   export const sections = [
     { id: 'basicInfo', title: 'Basic Info', Component: BasicInfo },
-    { id: 'history', title: 'History', Component: History },
+    { id: 'historyData', title: 'History', Component: History },
     { id: 'names', title: 'Names', Component: Names },
     { id: 'knownSources', title: 'Known Sources', Component: KnownSources },
     { id: 'oldAppsInfo', title: 'Old Applications Info', Component: OldAppsInfo },
-    
   ];
 
   // Define tabs for the NSRL info section
