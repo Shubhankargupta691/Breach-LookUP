@@ -10,7 +10,7 @@ import './App.css'
 const App = () => {
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen bg-black text-white p-5 ">
+        <div className="flex flex-col items-center justify-center w-auto lg:w-full bg-[#060720] text-white p-5 ">
           <Router>
             <Navbar />
             <Routes>
