@@ -1,83 +1,30 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import "../../../App.css";
 import PropTypes from "prop-types";
-import { getFileDetails } from "./script/ExtractFileData";
-import { FaExclamationTriangle, FaCheckCircle } from "react-icons/fa";
+import { svgPaths } from "../utils";
+import { renderTags, renderDistributors, renderCategory, DetailRenderer, useFetchDetails, OtherDetailsRenderer } from "./script";
 
-import {fileDetailsInfo, svgPaths } from "../utils";
+const FileInfoCard = ({ fileInfo, jsonData, InputType }) => {
 
-const FileInfoCard = ({ fileInfo, jsonData, searchInput }) => {
-  const [fileDetails, setFileDetails] = useState({
-    fileName: "",
-    fileSize: "",
-    fileExt: "",
-    fileHash: "",
-    lastAnalysisDate: "",
-    detected: "",
-    distributors: [],
-    tags: [],
-  });
-
-  const handleFileChange = async (fileInfo, jsonData, searchInput) => {
-    if (fileInfo) {
-      const details = getFileDetails(jsonData, fileInfo);
-      setFileDetails({ ...details });
-    } else if (searchInput) {
-      const details = getFileDetails(jsonData, null, searchInput);
-      setFileDetails({ ...details });
-    }
-  };
-
-  useEffect(() => {
-    if (fileInfo || searchInput) {
-      handleFileChange(fileInfo, jsonData, searchInput);
-    }
-  }, [fileInfo, jsonData, searchInput]);
-
-  const renderDistributors = () => {
-    const { distributors } = fileDetails;
-    if (distributors.length > 3) {
-      return `${distributors.slice(0, 3).join(", ")} & others`;
-    }
-    return distributors.join(", ") || "None";
-  };
-
-  const renderTags = () => {
-    const { tags } = fileDetails;
-    if (tags.length === 0) {
-      return null;
-    }
-    return (
-      <div className="flex flex-wrap gap-2 mt-2">
-        {tags.map((tag, index) => (
-          <span
-            key={index}
-            className="bg-gray-700 text-gray-200 px-2 py-1 rounded-md text-xs transition-all duration-200 hover:bg-gray-600"
-          >
-            {tag}
-          </span>
-        ))}
-      </div>
-    );
-  };
-
-  const renderCategory = () => {
-    return fileDetails.detected >= 0 ? (
-      <FaExclamationTriangle className="inline text-red-500 mr-1 text-[2vh] transition-all duration-200 transform hover:scale-110" />
-    ) : (
-      <FaCheckCircle className="inline text-green-500 mr-1 text-[2vh] transition-all duration-200 transform hover:scale-110" />
-    );
-  };
-
+  const details = useFetchDetails(InputType, jsonData, fileInfo);
+  
   return (
-    <div className="card transition-all duration-300 ease-in-out hover:shadow-2xl">
+    <div className="bg-gradient-to-r from-gray-800 to-gray-900 border border-gray-700 card 
+                    transition-all duration-300 ease-in-out hover:shadow-2xl
+                    w-auto xs:w-[20rem] sm:w-[40rem] md:w-full lg:w-full">
+      {/* Distributors Section */}
       <div className="card-header flex flex-wrap justify-between gap-2">
-        <div className={`flex gap-2 font-bold ${fileDetails.detected >= 0 ? "text-red-500" : "text-gray-600"}`}>
-          <i className="text-4xl flex transition-all duration-200">{renderCategory()}</i>
+
+        <div className={`flex font-bold ${details.detected > 0 ? "text-red-500" : "text-gray-300"}`}>
+          <i className="text-4xl place-items-center mr-1 flex transition-all duration-200 align-middle">
+            {renderCategory(details)}
+          </i>
           <div className="font-bold flex items-center">
-            <p className="truncate transition-all duration-200">{renderDistributors()}</p>
+            <p className="truncate transition-all duration-200">{renderDistributors(details, InputType)}</p>
           </div>
         </div>
+        
+        {/* Reanalyse Section */}
         <div className="flex items-center gap-4 fw-semibold">
           {svgPaths.map((svg) => (
             <a key={svg.id} id={svg.id} role="button" className="flex items-center gap-1 cursor-pointer">
@@ -101,37 +48,26 @@ const FileInfoCard = ({ fileInfo, jsonData, searchInput }) => {
           ))}
         </div>
       </div>
+      <div className="border-y border-gray-700 "></div>
 
+      {/* Details Section */}
       <div className="card-body flex transition-all duration-300 ease-in-out">
-        <div className="flex flex-col gap-2 my-auto min-w-0">
-          <div className="flex gap-4">
-            <div className="flex flex-col gap-2 align-self-center">
-              <div className="file-id truncate transition-all duration-200" title={fileDetails.fileHash}>
-                {fileDetails.fileHash}
-              </div>
-              <div className="file-name truncate transition-all duration-200" title={fileDetails.fileName}>
-                <a href="">{fileDetails.fileName}</a>
-              </div>
+        <div className="vstack gap-2 my-auto min-w-0">
+          <div className="hstack gap-4">
+            <div className="vstack gap-2 align-self-center">
+              {/* Render dynamic details based on ID */}
+                <DetailRenderer details={details} InputType={InputType} />
             </div>
             <div className="border-l border-gray-300 my-3"></div>
-            {fileDetailsInfo(fileDetails).map((detail, index) => (
-              <React.Fragment key={index}>
-                <div>
-                  <div className="text-gray-500">{detail.label}</div>
-                  <a href="" className="text-nowrap truncate transition-all duration-200" title={detail.title}>
-                    {detail.value}
-                  </a>
-                </div>
-                {index < fileDetailsInfo(fileDetails).length - 1 && <div className="border-l border-gray-300 my-3"></div>}
-              </React.Fragment>
-            ))}
+                <OtherDetailsRenderer details={details} InputType={InputType} />
           </div>
         </div>
       </div>
 
-      <div className="flex gap-2 flex-wrap p-1">
+      {/* Tags Section */}
+      <div className="hastack flex gap-1 flex-wrap p-1">
         <div className="flex justify-start items-center mb-1">
-          <div className="font-bold text-lg p-2">{renderTags()}</div>
+          <div className="font-bold text-lg p-2">{renderTags(details)}</div>
         </div>
       </div>
     </div>
@@ -144,10 +80,9 @@ FileInfoCard.propTypes = {
     size: PropTypes.number.isRequired,
     type: PropTypes.string,
     lastModified: PropTypes.number,
-    detected: PropTypes.number,
-  }),
+  }).isRequired,
   jsonData: PropTypes.object,
-  searchInput: PropTypes.string,
+  InputType: PropTypes.string.isRequired,
 };
 
 export default FileInfoCard;
