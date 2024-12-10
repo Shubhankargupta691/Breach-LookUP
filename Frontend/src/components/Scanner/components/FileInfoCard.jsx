@@ -76,11 +76,11 @@ const FileInfoCard = ({ fileInfo, jsonData, InputType }) => {
 
 FileInfoCard.propTypes = {
   fileInfo: PropTypes.shape({
-    name: PropTypes.string.isRequired,
-    size: PropTypes.number.isRequired,
+    name: PropTypes.string,
+    size: PropTypes.number,
     type: PropTypes.string,
     lastModified: PropTypes.number,
-  }).isRequired,
+  }),
   jsonData: PropTypes.object,
   InputType: PropTypes.string.isRequired,
 };
