@@ -25,7 +25,7 @@ func main() {
 	)
 
 	// Routes
-	r.HandleFunc("/api/email", email.HandleInput).Methods("GET")
+	r.HandleFunc("/api/email", email.HandleInput).Methods("POST")
 	r.HandleFunc("/api/password", password.HandleInputPassword).Methods("GET")
 	r.HandleFunc("/upload", scanner.UploadFileHandler).Methods("POST")
 	r.HandleFunc("/scan/hash", scanner.ScanFileByHashHandler).Methods("POST")
