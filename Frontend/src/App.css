@@ -3,11 +3,224 @@
 @tailwind components;
 @tailwind utilities;
 
-body{
-  background-color: black;
-  overflow:auto;
-
+body {
+  background: #060720;
+  overflow: auto;
+  width: 100%;
+  height: 100%;
 }
+
+a:link {
+  text-decoration: none;
+}
+
+a:visited {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+a:active {
+  text-decoration: none;
+}
+
+
+
+
+/* Card Component */
+.card {
+  --bs-card-spacer-y: 1rem;
+  --bs-card-spacer-x: 1.5rem;
+  --bs-card-title-spacer-y: 0.5rem;
+  --bs-card-title-color: #333;
+  --bs-card-subtitle-color: #6c757d;
+  --bs-card-border-width: 1px;
+  --bs-card-border-color: #ddd;
+  --bs-card-border-radius: 0.25rem;
+  --bs-card-box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  --bs-card-inner-border-radius: calc(var(--bs-card-border-radius) - var(--bs-card-border-width));
+  --bs-card-cap-padding-y: 1rem;
+  --bs-card-cap-padding-x: 1.5rem;
+  --bs-card-cap-bg: #f8f9fa;
+  --bs-card-cap-color: #333;
+  --bs-card-height: auto;
+  /* --bs-card-color: #212529;
+  --bs-card-bg: #fff; */
+  --bs-card-img-overlay-padding: 1rem;
+  --bs-card-group-margin: 0.75rem;
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  height: var(--bs-card-height);
+  color: var(--bs-card-color);
+  overflow-wrap: break-word;
+  background-color: var(--bs-card-bg);
+  background-clip: border-box;
+  border: var(--bs-card-border-width) solid var(--bs-card-border-color);
+  border-radius: var(--bs-card-border-radius);
+  box-shadow: var(--bs-card-box-shadow);
+
+  width: 100%;
+}
+
+.card-body {
+  flex: 1 1 auto;
+  padding: var(--bs-card-spacer-y) var(--bs-card-spacer-x);
+  color: var(--bs-card-color);
+  overflow: hidden;  
+}
+
+
+.card-header {
+  border-bottom: 0px;
+}
+
+
+.text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition: max-width 0.5s ease;
+}
+
+.my-3 {
+  margin-top: 1rem !important;
+  margin-bottom: 1rem !important;
+}
+
+.fs-4 {
+  font-size: calc(1.275rem + 0.3vw) !important;
+}
+
+.fs-5 {
+  font-size: 1.25rem !important;
+}
+
+.fw-semibold {
+  font-weight: 500 !important;
+}
+
+.fw-bold, table.table-card thead th {
+  font-weight: 600 !important;
+}
+
+.text-white {
+  color: white !important;
+}
+
+.text-body-tertiary {
+  color: var(--bs-tertiary-color) !important;
+}
+
+.text-danger {
+  color: rgba(var(--bs-danger-rgb), var(--bs-text-opacity)) !important;
+}
+
+.align-self-center {
+  align-self: center !important;
+}
+
+
+.text-danger {
+  color: rgba(var(--bs-danger-rgb), var(--bs-text-opacity)) !important;
+}
+
+.text-body-tertiary {
+  color: var(--bs-tertiary-color) !important;
+}
+
+.text-white {
+  color: white !important;
+}
+
+.text-nowrap {
+  white-space: nowrap !important;
+}
+
+.text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition: max-width 0.5s ease;
+}
+
+.img-thumbnail {
+  padding: 0.25rem;
+  background-color: var(--bs-body-bg);
+  border: var(--bs-border-width) solid var(--bs-border-color);
+  border-radius: var(--bs-border-radius);
+  max-width: 100%;
+  height: auto;
+}
+
+.report-card-img-size {
+  font-size: 4rem;
+  width: 4rem;
+  height: 4rem;
+  image-rendering: pixelated;
+}
+
+.rounded-circle {
+  border-radius: 50% !important;
+}
+
+.border {
+  border: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color) !important;
+}
+
+
+.truncate {
+  max-width: none;
+  white-space: nowrap;
+  overflow: visible;
+  text-overflow: clip;
+  transition: max-width 0.5s ease, overflow 0.5s ease, text-overflow 0.5s ease;
+}
+
+
+@media screen and(min-width: 1330px) {
+  .truncate {
+    max-width: none;  /* No truncation */
+    overflow: visible;
+    text-overflow: clip;
+    transition: max-width 0.5s ease, overflow 0.5s ease, text-overflow 0.5s ease;
+  }
+}
+
+
+@media screen and (min-width: 768px) and (max-width: 1330px) {
+  .truncate {
+    max-width: 250px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: max-width 0.5s ease, overflow 0.5s ease, text-overflow 0.5s ease;
+  }
+}
+
+
+@media screen and (min-width: 480px) and (max-width: 767px) {
+  .truncate {
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: max-width 0.5s ease, overflow 0.5s ease, text-overflow 0.5s ease;
+  }
+}
+
+
+@media screen and (max-width: 479px) {
+  .truncate {
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: max-width 0.5s ease, overflow 0.5s ease, text-overflow 0.5s ease;
+  }
+}
+
 /* Custom Animation Utility */
 @layer utilities {
   .animate-fadeIn {
@@ -20,6 +233,7 @@ body{
     transform: translateY(10px);
     transition: opacity 0.5s ease, transform 0.5s ease;
   }
+
   .fade-enter-active {
     opacity: 1;
     transform: translateY(0);
@@ -30,15 +244,123 @@ body{
       opacity: 1;
     }
   }
-}
-/* Smooth fade-in effect for tab content */
-.tab-content .tab-pane {
-  opacity: 0;
-  transform: translateY(10px);
-  transition: opacity 0.5s ease, transform 0.5s ease;
+
+
+  @keyframes truncateText {
+    0% {
+      max-width: none;
+      white-space: nowrap;
+      overflow: visible;
+      text-overflow: clip;
+    }
+    100% {
+      max-width: 150px; 
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
 }
 
-.tab-content .tab-pane.active {
-  opacity: 1;
-  transform: translateY(0);
+
+@media screen and (min-width: 1348px) {
+  .card {
+    width: 100%;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+
+  .file-name,
+  .file-id,
+  .file-size,
+  .last-analysis-date,
+  .file-ext {
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+
+@media screen and (max-width: 1347px) and (min-width: 1024px) {
+  .card {
+    width: 95%; 
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+
+  .file-name,
+  .file-id,
+  .file-size,
+  .last-analysis-date,
+  .file-ext {
+    max-width: 250px; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+@media screen and (max-width: 1023px) and (min-width: 768px) {
+  .card {
+    width: 90%; 
+  }
+
+  .file-name,
+  .file-id,
+  .file-size,
+  .last-analysis-date,
+  .file-ext {
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+
+@media screen and (max-width: 767px) and (min-width: 480px) {
+  .card {
+    width: 85%; 
+  }
+
+  .file-name,
+  .file-id,
+  .file-size,
+  .last-analysis-date,
+  .file-ext {
+    max-width: 150px; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+@media screen and (max-width: 479px) {
+  .card {
+    width: 80%; 
+  }
+
+  .file-name,
+  .file-id,
+  .file-size,
+  .last-analysis-date,
+  .file-ext {
+    max-width: 120px; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.hstack{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  align-self: stretch;
+}
+
+.vstack{
+display: flex;
+flex: 1 1 auto;
+flex-direction: column;
+align-self: stretch;
 }

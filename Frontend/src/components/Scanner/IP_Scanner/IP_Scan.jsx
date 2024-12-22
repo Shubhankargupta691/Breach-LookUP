@@ -1,4 +1,6 @@
-export const IP_Scan = async (ip, setJsonData) => {
+import React from 'react';
+
+const IP_Scan = async (ip, setJsonData) => {
   try {
     console.log('IP Scan started...', ip);
     const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/ip/report`, {
@@ -24,3 +26,5 @@ export const IP_Scan = async (ip, setJsonData) => {
     setJsonData(null);
   }
 };
+
+export default IP_Scan;

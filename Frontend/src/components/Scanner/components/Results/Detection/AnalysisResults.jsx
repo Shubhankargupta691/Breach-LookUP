@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { FaExclamationTriangle, FaQuestionCircle, FaCheckCircle } from "react-icons/fa"; 
-import {sortAnalysisResults} from "../../utils/sortUtils";
+import {sortAnalysisResults, extractAllData} from "../../../utils";
 
 const AnalysisResults = ({ jsonData }) => {
   const [analysisResults, setAnalysisResults] = useState([]);
 
-  const last_analysisResults = jsonData.data.attributes.last_analysis_results;
+  const last_analysisResults = extractAllData(jsonData).lastAnalysisResults;
   
   useEffect(() => {
     if (last_analysisResults) {
@@ -29,6 +29,8 @@ const AnalysisResults = ({ jsonData }) => {
     } else if (category === "type-unsupported" || category === "failure" ) {
       icon = <FaQuestionCircle className="inline ml-2 text-yellow-500 mr-2" />;
       displayText = category === "type-unsupported" ? "Unable to process file type" : "Failed to Scan";
+    }else if (category === "suspicious") {
+      icon = <FaExclamationTriangle className="inline ml-2 text-yellow-500 mr-2" />;
     }
     return (
       <>
@@ -40,9 +42,6 @@ const AnalysisResults = ({ jsonData }) => {
 
   return (
     <>
-      <div className="text-lg font-semibold text-center mb-4">
-        Analysis Results
-      </div>
         <div id="analysis-container" className="bg-black rounded-lg shadow-lg p-6 text-sm">
               {/* Table Header */}
               <div className="grid grid-cols-2 md:grid-cols-12 gap-4 border-b border-gray-600 pb-2 mb-4">
@@ -76,7 +75,7 @@ const AnalysisResults = ({ jsonData }) => {
                       {/* 2nd Engine Name & Category column */}
                       {analysisResults[index + 1] ? (
                         <>
-                          <div className="hidden md:block md:col-span-3 pl-5 text-left whitespace-nowrap truncate">
+                          <div className="hidden md:block md:col-span-3 pl-[5rem] text-left whitespace-nowrap truncate">
                             {analysisResults[index + 1][1].engine_name}
                           </div>
                           <div

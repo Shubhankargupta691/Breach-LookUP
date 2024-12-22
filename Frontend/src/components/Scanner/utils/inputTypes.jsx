@@ -1,11 +1,13 @@
 // inputTypes.js
-import { patterns } from './Patterns';
+import Patterns  from './Patterns';
 
 
-// Define the input types and their corresponding regex patterns
-export const inputTypes = [
-  { type: "IP", regex: patterns.ip },
-  { type: "Domain", regex: patterns.domain },
-  { type: "Hash", regex: patterns.hash },
-  { type: "URL", regex: patterns.url }
+// Define the input types and their corresponding regex Patterns
+const inputTypes = [
+  { type: "IP", regex: Patterns.ip },
+  { type: "Domain", regex: Patterns.domain },
+  { type: "Hash", regex: Patterns.hash },
+  { type: "URL", regex: Patterns.url }
 ];
+
+export default inputTypes;

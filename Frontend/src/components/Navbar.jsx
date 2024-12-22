@@ -69,7 +69,7 @@ const Navbar = () => {
 
             {/* Mobile Menu */}
             <div
-                className={`sm:hidden bg-blue-900 bg-opacity-95 flex flex-col space-y-2 p-4 transition-all duration-500 ease-in-out ${
+                className={`sm:hidden bg-blue-900 bg-opacity-95 flex flex-col space-y-2 p-1 transition-all duration-500 ease-in-out ${
                     isMobileMenuOpen ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0 overflow-hidden'
                 }`}
             >

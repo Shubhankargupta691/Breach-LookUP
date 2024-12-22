@@ -1,9 +1,7 @@
 
 import React, { useState } from 'react';
-import SearchBox from '../utils/SearchBox';
-import Results from '../components/email/Result';
-import Header from '../components/email/Header';
-import { handleSearch } from '../utils/api';
+import { handleSearch, SearchBox } from '../utils';
+import {Header, Results} from '../components/email';
 
 
 const Email = () => {
@@ -15,7 +13,7 @@ const Email = () => {
     };
   
       return (
-         <div className="flex flex-col items-center justify-center min-h-screen bg-black text-white p-5">
+         <div className="flex flex-col items-center justify-center min-h-screen bg-[#060720] text-white p-5">
               <Header />
               <SearchBox onSubmit={onSubmitSearch} />
               {error && <div className="text-red-500 mt-4">{error}</div>} {/* Display error message if any */}

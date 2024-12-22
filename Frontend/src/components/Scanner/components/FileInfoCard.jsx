@@ -1,111 +1,88 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
+import "../../../App.css";
 import PropTypes from "prop-types";
-import { fileInfoData as baseFileInfoData } from "../utils/fileUtils";
-import { getFileDetails } from "./script/ExtractDataUtils";
+import { svgPaths } from "../utils";
+import { renderTags, renderDistributors, renderCategory, DetailRenderer, useFetchDetails, OtherDetailsRenderer } from "./script";
 
-const FileInfoCard = ({ fileInfo, jsonData, searchInput }) => {
-  const [fileDetails, setFileDetails] = useState({
-    fileName: "",
-    fileSize: "",
-    fileExt: "",
-    fileHash: "",
-    lastAnalysisDate: "",
-    detected: "",
-    distributors: [],
-    tags: [],
-  });
+const FileInfoCard = ({ fileInfo, jsonData, InputType }) => {
 
-  const handleFileChange = async (fileInfo, jsonData, searchInput) => {
-    if (fileInfo) {
-      const details = getFileDetails(jsonData, fileInfo);
-      setFileDetails({ ...details });
-    } else if (searchInput) {
-      const details = getFileDetails(jsonData, null, searchInput);
-      setFileDetails({ ...details });
-    }
-  };
-
-  useEffect(() => {
-    if (fileInfo || searchInput) {
-      handleFileChange(fileInfo, jsonData, searchInput);
-    }
-  }, [fileInfo, jsonData, searchInput]);
-
-  const renderDistributors = () => {
-    const { distributors } = fileDetails;
-    if (distributors.length > 3) {
-      return `${distributors.slice(0, 3).join(", ")} & others`;
-    }
-    return distributors.join(", ") || "None";
-  };
-
-  const renderTags = () => {
-    const { tags } = fileDetails;
-    if (tags.length === 0) {
-      return <p className="text-sm text-gray-400">No tags available</p>;
-    }
-
-    return (
-      <div className="flex flex-wrap gap-2 mt-2">
-        {tags.map((tag, index) => (
-          <span
-            key={index}
-            className="bg-gray-700 text-gray-200 px-2 py-1 rounded-md text-xs"
-          >
-            {tag}
-          </span>
-        ))}
-      </div>
-    );
-  };
-
-  const updatedFileInfoData = baseFileInfoData.map((item) => ({
-    ...item,
-    value: fileDetails[item.id] !== undefined ? fileDetails[item.id] : item.value,
-  }));
-
+  const details = useFetchDetails(InputType, jsonData, fileInfo);
+  
   return (
-    <section>
-      <div className="bg-gradient-to-r from-gray-800 to-gray-900 border border-gray-700 rounded-lg shadow-lg p-6 w-full max-w-5xl mx-auto mt-4 h-auto text-white flex flex-col">
-        <div className="flex justify-start items-center mb-1">
-          <p className="font-bold text-lg pr-4">Distributors:</p>
-          <p className="font-bold">{renderDistributors()}</p>
+    <div className="bg-gradient-to-r from-gray-800 to-gray-900 border border-gray-700 card 
+                    transition-all duration-300 ease-in-out hover:shadow-2xl
+                    w-auto xs:w-[20rem] sm:w-[40rem] md:w-full lg:w-full">
+      {/* Distributors Section */}
+      <div className="card-header flex flex-wrap justify-between gap-2">
+
+        <div className={`flex font-bold ${details.detected > 0 ? "text-red-500" : "text-gray-300"}`}>
+          <i className="text-4xl place-items-center mr-1 flex transition-all duration-200 align-middle">
+            {renderCategory(details)}
+          </i>
+          <div className="font-bold flex items-center">
+            <p className="truncate transition-all duration-200">{renderDistributors(details, InputType)}</p>
+          </div>
         </div>
-
-        <hr className="hidden md:block text-gray-600 mt-1" />
-
-        <div className="flex flex-wrap lg:flex-nowrap gap-4 lg:gap-8">
-          {updatedFileInfoData.map((item, index) => (
-            <div key={index} className="flex flex-col lg:flex-row gap-1 lg:gap-2 items-start">
-              <p className="text-sm flex">
-                <span className="font-bold text-gray-400">{item.label}:</span>
-                <span id={item.id} className="text-gray-200 pl-2 ">
-                  {item.value}
-                </span>
-              </p>
-            </div>
+        
+        {/* Reanalyse Section */}
+        <div className="flex items-center gap-4 fw-semibold">
+          {svgPaths.map((svg) => (
+            <a key={svg.id} id={svg.id} role="button" className="flex items-center gap-1 cursor-pointer">
+              <i className="text-lg">
+                <svg
+                  xmlns={svg.xmlns}
+                  width={svg.width}
+                  height={svg.height}
+                  viewBox={svg.viewBox}
+                  fill={svg.fill}
+                >
+                  <g>
+                    {svg.path.map((path, index) => (
+                      <path key={index} d={path} />
+                    ))}
+                  </g>
+                </svg>
+              </i>
+              Reanalyze
+            </a>
           ))}
         </div>
-        <hr className="hidden md:block text-gray-600 mt-4" />
+      </div>
+      <div className="border-y border-gray-700 "></div>
 
-        <div className="flex justify-start items-center mb-1">
-          <div className="font-bold text-lg">{renderTags()}</div>
+      {/* Details Section */}
+      <div className="card-body flex transition-all duration-300 ease-in-out">
+        <div className="vstack gap-2 my-auto min-w-0">
+          <div className="hstack gap-4">
+            <div className="vstack gap-2 align-self-center">
+              {/* Render dynamic details based on ID */}
+                <DetailRenderer details={details} InputType={InputType} />
+            </div>
+            <div className="border-l border-gray-300 my-3"></div>
+                <OtherDetailsRenderer details={details} InputType={InputType} />
+          </div>
         </div>
       </div>
-    </section>
+
+      {/* Tags Section */}
+      <div className="hastack flex gap-1 flex-wrap p-1">
+        <div className="flex justify-start items-center mb-1">
+          <div className="font-bold text-lg p-2">{renderTags(details)}</div>
+        </div>
+      </div>
+    </div>
   );
 };
 
 FileInfoCard.propTypes = {
   fileInfo: PropTypes.shape({
-    name: PropTypes.string.isRequired,
-    size: PropTypes.number.isRequired,
+    name: PropTypes.string,
+    size: PropTypes.number,
     type: PropTypes.string,
     lastModified: PropTypes.number,
-    detected: PropTypes.number,
   }),
   jsonData: PropTypes.object,
-  searchInput: PropTypes.string,
+  InputType: PropTypes.string.isRequired,
 };
 
 export default FileInfoCard;
