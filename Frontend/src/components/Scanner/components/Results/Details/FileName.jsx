@@ -11,6 +11,9 @@ const FileNames = ({ jsonData }) => {
 
   return (
     <SectionWrapper>
+      <div className='flex  font-bold text-white bg-slate-600 h-full pl-1 text-sm sm:text-base shadow-md'>
+                <h2 className='my-1'>File Names</h2>
+            </div>
       {filenames.map((item, index) => (
         <p key={index} className="text-gray-200">{item}</p>
       ))}
@@ -18,6 +21,4 @@ const FileNames = ({ jsonData }) => {
   );
 };
 
-const ExportComponent = FileNames.length > 0 ? FileNames : null;
-
-export default ExportComponent;
+export default FileNames;

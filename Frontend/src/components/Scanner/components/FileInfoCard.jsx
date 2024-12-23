@@ -2,11 +2,21 @@ import React from "react";
 import "../../../App.css";
 import PropTypes from "prop-types";
 import { svgPaths } from "../utils";
-import { renderTags, renderDistributors, renderCategory, DetailRenderer, useFetchDetails, OtherDetailsRenderer } from "./script";
+import { renderTags, renderDistributors, renderCategory, DetailRenderer, useFetchDetails, OtherDetailsRenderer, ReportFetcher } from "./script";
 
 const FileInfoCard = ({ fileInfo, jsonData, InputType }) => {
 
-  const details = useFetchDetails(InputType, jsonData, fileInfo);
+  const [data, setData] = React.useState(null);
+  if(data === null){
+    setData(jsonData);
+  }
+
+  const Data = jsonData || data;
+
+
+  
+  
+  const details = useFetchDetails(InputType, Data, fileInfo);
   
   return (
     <div className="bg-gradient-to-r from-gray-800 to-gray-900 border border-gray-700 card 
@@ -35,6 +45,7 @@ const FileInfoCard = ({ fileInfo, jsonData, InputType }) => {
                   height={svg.height}
                   viewBox={svg.viewBox}
                   fill={svg.fill}
+                  onClick={() => ReportFetcher(jsonData?.data?.id, setData)}
                 >
                   <g>
                     {svg.path.map((path, index) => (

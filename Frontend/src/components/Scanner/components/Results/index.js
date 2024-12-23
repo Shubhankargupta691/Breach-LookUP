@@ -1,6 +1,6 @@
 export * from '../Results/Details'
 export * from '../Results/Detection'
-export {default as Associations} from './Associations'
+
 export {default as Behaviour} from './Behaviour'
-export {default as Community} from './Community'
+
 export {default as Relations} from './Relations'
