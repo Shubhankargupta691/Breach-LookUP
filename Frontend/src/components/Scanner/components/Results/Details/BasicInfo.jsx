@@ -3,7 +3,7 @@ import SectionWrapper from '../../Shared/SectionWrapper';
 import { extractAllData, keyData } from '../../../utils/';
 
 const BasicInfo = ({ jsonData }) => {
-  const attributes = extractAllData(jsonData).basicInfo;
+  const {attributes} = extractAllData(jsonData);
 
   const renderMultiValues = (attributeId) => {
     const maxItemsToShow = 5;
@@ -54,6 +54,9 @@ const BasicInfo = ({ jsonData }) => {
   return (
     <SectionWrapper>
       <div className="max-h-screen overflow-auto">
+        <div className='flex mb-3 font-bold text-white bg-slate-600 h-full pl-1 text-sm sm:text-base shadow-md'>
+          <h2 className='my-1'>Basic Info:</h2>
+        </div>
         {keyData
           .map((key, index) => {
             const value =

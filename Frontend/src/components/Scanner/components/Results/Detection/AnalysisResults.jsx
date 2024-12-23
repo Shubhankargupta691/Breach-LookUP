@@ -5,17 +5,17 @@ import {sortAnalysisResults, extractAllData} from "../../../utils";
 const AnalysisResults = ({ jsonData }) => {
   const [analysisResults, setAnalysisResults] = useState([]);
 
-  const last_analysisResults = extractAllData(jsonData).lastAnalysisResults;
+  const {lastAnalysisResults} = extractAllData(jsonData);
   
   useEffect(() => {
-    if (last_analysisResults) {
-      const resultsArray = Object.entries(last_analysisResults);
+    if (lastAnalysisResults) {
+      const resultsArray = Object.entries(lastAnalysisResults);
       const sortedArray = sortAnalysisResults(resultsArray);
       setAnalysisResults(sortedArray);
     } else {
       console.error("Invalid JSON structure");
     }
-  }, [last_analysisResults]);
+  }, [lastAnalysisResults]);
 
   // Helper function to render icons and category text
   const renderCategory = (category, result) => {
@@ -42,7 +42,8 @@ const AnalysisResults = ({ jsonData }) => {
 
   return (
     <>
-        <div id="analysis-container" className="bg-black rounded-lg shadow-lg p-6 text-sm">
+        <div id="analysis-container" className="bg-gradient-to-r from-gray-800 to-gray-900 border border-gray-700
+               rounded-lg shadow-lg p-6 text-sm">
               {/* Table Header */}
               <div className="grid grid-cols-2 md:grid-cols-12 gap-4 border-b border-gray-600 pb-2 mb-4">
                 <div className="col-span-1 md:col-span-3 font-semibold whitespace-nowrap text-left">Engine Name</div>
