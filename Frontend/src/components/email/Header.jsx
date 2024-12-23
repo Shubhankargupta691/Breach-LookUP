@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { EmailHeader } from '../../utils/items';
+import { EmailHeader } from '../../utils';
 
 
 const Header = () => {
@@ -21,5 +21,5 @@ const Header = () => {
     );
 }
 
-export default Header
+export default Header;
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { privacyPolicyData, privacyHeader  } from '../utils/items'; // Make sure to update the import path accordingly
+import { privacyPolicyData, privacyHeader  } from '../utils'; // Make sure to update the import path accordingly
  
 
 const Privacy = () => {
