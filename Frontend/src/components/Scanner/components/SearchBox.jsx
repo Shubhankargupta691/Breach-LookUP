@@ -6,18 +6,21 @@ import { detectInputType, getScanActions } from '../utils';
 import FileInfoCard from './FileInfoCard';
 import {uploadAndScan} from '../File_UploadScan';
 import Results from '../Results';
+import {Home, URL} from '../Home_Page';
 
 const SearchBox = () => {
   const [searchInput, setSearchInput] = useState("");
   const [fileInfo, setFileInfo] = useState(null);
   const [jsonData, setJsonData] = useState(null);
   const [isScanning, setIsScanning] = useState(false);
-  const [statusMessage, setStatusMessage] = useState("");
+  const [statusMessage, setStatusMessage] = useState(false);
   const [InputType, setInputType] = useState("");
+  const [showHome, setShowHome] = useState(true);
 
   const handleSearchChange = (event) => {
     const inputValue = event.target.value.trim();
     setSearchInput(inputValue);
+
   };
 
   // Function to handle search on submit
@@ -28,7 +31,8 @@ const SearchBox = () => {
       console.error("No input provided for hash scanning.");
       return;
     }
-  
+    // Your search logic here 
+    console.log("Searching for:", searchInput);
     const { firstMatch: inputType } = detectInputType(searchInput);
     setInputType(inputType);
     console.log("Detected input type:", inputType); // Debugging line
@@ -66,6 +70,8 @@ const SearchBox = () => {
 
   const handleFileInfo = async () => {
     const file = document.getElementById("fileUpload").files[0];
+    let input = 'Hash';
+    setInputType(input);
     if (file) {
       setFileInfo(file);
       setStatusMessage("File uploaded successfully");
@@ -89,11 +95,16 @@ const SearchBox = () => {
   };
 
   useEffect(() => {
+    if(InputType){
+      setStatusMessage(true)
+    }
+    
     if (jsonData) {
       setStatusMessage("");  // Clear status message when jsonData is received
       console.log("jsonData:", jsonData); // Debugging line
+      setShowHome(false);
     }
-  }, [jsonData]);
+  }, [jsonData, InputType]);
 
   const reanalyze = () => {
     console.log("Reanalyze initiated");
@@ -145,16 +156,17 @@ const SearchBox = () => {
 
       {/* Spinner */}
       <section className="transition-opacity duration-500 ease-out mt-[120px]">
-        {statusMessage && (
-          <div className="mt-4 flex items-center space-x-2 text-gray-300 animate-pulse">
-            {statusMessage === "File uploaded successfully" ? (
-              <FontAwesomeIcon icon={faCheckCircle} className="text-xl text-green-500" />
-            ) : (
-              <FontAwesomeIcon icon={faSpinner} className="animate-spin text-xl" />
-            )}
-            <span className="text-lg">{statusMessage}</span>
-          </div>
-        )}
+      {statusMessage && (
+        <div className="flex justify-center items-center fixed inset-0 text-gray-300 animate-pulse">
+          {statusMessage === "File uploaded successfully" ? (
+            <FontAwesomeIcon icon={faCheckCircle} className="text-xl text-green-500" />
+          ) : (
+            <FontAwesomeIcon icon={faSpinner} className="animate-spin text-xl" />
+          )}
+          <span className="ml-2 text-lg">{statusMessage}</span>
+        </div>
+      )}
+
   
         {/* Gauge and FileInfoCard Section */}
         {jsonData && (
@@ -174,20 +186,22 @@ const SearchBox = () => {
             <div 
               className="flex justify-center items-center w-full lg:w-full transition-all duration-500 ease-in-out"
             >
-              <FileInfoCard 
+             {<FileInfoCard 
                 fileInfo={fileInfo} 
                 jsonData={jsonData} 
                 InputType={InputType}
                 className="w-full"
-              />
+              />}
             </div>
           </div>
         )}
 
+        {/* Home Page */}
+        {showHome && !statusMessage && <Home setSearchInput={setSearchInput} />}
         
         {/* Results Section */}
         <div className="flex justify-center items-center w-full max-w-full mx-auto animate-fadeIn">
-          {jsonData && <Results jsonData={jsonData} />}
+          {jsonData && InputType && <Results jsonData={jsonData} InputType={InputType} />}
         </div>
       </section>
     </>

@@ -1,8 +1,8 @@
 // fileUtils.jsx
 import React from 'react';
-import {BasicInfo, History, KnownSources, Product, FileNames, OldAppsInfo,  Names, DetailsResult, AnalysisResults, Relations, Associations, Behaviour,Community} from '../components/Results';
+import {BasicInfo, History, KnownSources, Product, FileNames, OldAppsInfo,  Names, DetailsResult, AnalysisResults, Relations,  Behaviour,PEI, AndroGuard, Bundle } from '../components/Results';
 import { getFileDetails, getIPDetails } from '../components/script';
-
+import { LHC, WhoIS } from '../components/Results';
 
 /**
  * Hashes a file using SHA-256.
@@ -85,15 +85,19 @@ export const NameAndID = {
 };
 
 
-
-export const tabData = [
-  { id: 'detection', label: 'Detection', Component: AnalysisResults},
-  { id: 'details', label: 'Details', Component: DetailsResult},
-  { id: 'relation', label: 'Relation', Component: Relations},
-  { id: 'association', label: 'Association', Component: Associations},
-  { id: 'behaviour', label: 'Behaviour', Component: Behaviour},
-  { id: 'community', label: 'Community', Component: Community},
-];
+// Tabs data for the different input types
+export const tabData = {
+  FileAndHash: [
+    { id: 'detection', label: 'Detection', Component: AnalysisResults },
+    { id: 'details', label: 'Details', Component: DetailsResult },
+    { id: 'relation', label: 'Relation', Component: Relations },
+    { id: 'behaviour', label: 'Behaviour', Component: Behaviour },
+  ],
+  IP: [
+    { id: 'detection', label: 'Detection', Component: AnalysisResults },
+    { id: 'details', label: 'Details', Component: DetailsResult },
+  ],
+};
 
 export const keyData = [
   { id: 'md5', label: 'MD5' },
@@ -121,19 +125,30 @@ export const keyData = [
 
 
   // Define all sections with corresponding data keys for conditional rendering
-  export const sections = [
-    { id: 'basicInfo', title: 'Basic Info', Component: BasicInfo },
-    { id: 'historyData', title: 'History', Component: History },
-    { id: 'names', title: 'Names', Component: Names },
-    { id: 'knownSources', title: 'Known Sources', Component: KnownSources },
-    { id: 'oldAppsInfo', title: 'Old Applications Info', Component: OldAppsInfo },
-  ];
+export const DetailsSections = {
+  FileAndHash: [
+    { id: 'basicInfo', title: 'Basic Info', Component: BasicInfo},
+    { id: 'historyData', title: 'History', Component: History},
+    { id: 'Names', title: 'Names', Component: Names},
+    { id: 'knownSources', title: 'Known Sources', Component: KnownSources},
+    { id: 'oldAppsInfo', title: 'Old Applications Info', Component: OldAppsInfo},
+    { id: 'PEIData', title: 'Portable Executable Info', Component: PEI},
+    { id: 'androguard', title: 'Android Guard', Component: AndroGuard},
+    { id: 'Bundle', title: 'Bundle', Component: Bundle},
+  ],
+  IP: [
+    { id: 'basicInfo', title: 'Basic Info', Component: BasicInfo},
+    { id: 'historyData', title: 'History', Component: History},
+    { id: 'whois', title: 'WhoIs', Component: WhoIS},
+    { id: 'LHCData', title: 'Last HTTPS Certificate', Component: LHC},
+  ],
+};
 
   // Define tabs for the NSRL info section
-  export const tabs = [
-    { name: 'Product', key: 'product', component: Product },
-    { name: 'FileNames', key: 'filenames', component: FileNames },
-  ];
+export const tabs = [
+  { name: 'Product', key: 'product', component: Product },
+  { name: 'FileNames', key: 'filenames', component: FileNames },
+];
 
 export const dateFields = [
   {id: 'creation_date',  label: 'Creation Date' },
@@ -159,5 +174,4 @@ export const svgPaths = [
           ],
     },
 ];
-
 
