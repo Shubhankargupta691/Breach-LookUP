@@ -2,7 +2,7 @@ import React from 'react';
 
 const IP_Scan = async (ip, setJsonData) => {
   try {
-    console.log('IP Scan started...', ip);
+    // console.log('IP Scan started...', ip);
     const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/ip/report`, {
       method: 'GET',
       headers: {
@@ -16,7 +16,7 @@ const IP_Scan = async (ip, setJsonData) => {
       throw new Error(`Failed to fetch IP report. Status: ${response.status}`);
     }
     const jsonData = await response.json();
-    console.log("IP jsonData",jsonData);
+    // console.log("IP jsonData",jsonData);
     setJsonData(jsonData); 
 
 

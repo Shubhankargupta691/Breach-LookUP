@@ -7,10 +7,10 @@ export default async function HashScan(searchInput, setJsonData) {
   }
 
   try {
-    console.log("Sending hash to ReportFetcher function...");
-    console.log("Hash:", searchInput);
+    // console.log("Sending hash to ReportFetcher function...");
+    // console.log("Hash:", searchInput);
     await ReportFetcher(searchInput, setJsonData);
-    console.log("Report generation started...");
+    // console.log("Report generation started...");
   } catch (error) {
     console.error("Error during report generation:", error);
   }

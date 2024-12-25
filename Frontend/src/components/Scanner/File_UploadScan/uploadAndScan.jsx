@@ -37,15 +37,15 @@ export default async function uploadAndScan(file, setJsonData) {
 
     const uploadData = await uploadResponse.json();
 
-    console.log("Upload successful:", uploadData);
+    // console.log("Upload successful:", uploadData);
 
     setTimeout(async () => {
       try {
-        console.log("Sending hash to ReportFetcher function...");
+        // console.log("Sending hash to ReportFetcher function...");
 
         await ReportFetcher(File_Hash_SHA256, setJsonData);
 
-        console.log("Report generation started...");
+        // console.log("Report generation started...");
       } catch (ReportFetcherError) {
         console.error("Error during report generation:", ReportFetcherError);
       }

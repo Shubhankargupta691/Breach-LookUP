@@ -29,18 +29,18 @@ export function detectInputType(input) {
   
   export const getScanActions = (searchInput, setJsonData) => ({
     Hash: async () => {  
-      console.log("Starting Hash scan...");
+      // console.log("Starting Hash scan...");
       await HashScan(searchInput, setJsonData); 
-      console.log("Hash scan completed.");
+      // console.log("Hash scan completed.");
     },
     
     IP  : async () => { await IP_Scan(searchInput, setJsonData) },
 
 
     Domain: async () => {
-      console.log("Performing Domain scan...");
+      // console.log("Performing Domain scan...");
     },
     URL: async () => {
-      console.log("Performing URL scan...");
+      // console.log("Performing URL scan...");
     },
   });
