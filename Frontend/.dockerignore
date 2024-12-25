@@ -1,0 +1,15 @@
+# Ignore node_modules (not needed inside Docker image)
+node_modules/
+
+# Ignore .env (to avoid exposing sensitive data)
+.env
+
+# Ignore Vite build folder
+.vite/
+
+# Ignore log files
+*.log
+
+# Ignore system files
+.DS_Store
+Thumbs.db

@@ -1,8 +1,9 @@
 // src/App.jsx
 import React, { useState } from 'react';
 import Navbar from './components/Navbar';
-import {Email, Password, ScanForm,Privacy, FAQs } from './page';
+import {Email, Password, Privacy, FAQs } from './page';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import SearchBox from '../src/components/Scanner/components/SearchBox'
 import './App.css'
 
 
@@ -16,7 +17,7 @@ const App = () => {
             <Routes>
                 <Route path="/" element={<Email />} />
                 <Route path="/password" element={<Password />} />
-                <Route path="/scanner" element={<ScanForm />} />
+                <Route path="/scanner" element={<SearchBox />} />
                 <Route path="/privacy" element={<Privacy />} />
                 <Route path="/faq" element={<FAQs />} />
                 
