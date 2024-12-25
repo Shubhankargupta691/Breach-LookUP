@@ -37,7 +37,7 @@ type BreachResponse struct {
 
 func HandleInput(w http.ResponseWriter, r *http.Request) {
 
-	err := godotenv.Load()
+	err := godotenv.Load("../.env")
 	if err != nil {
 		fmt.Println("Error loading .env file")
 	}
