@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"log"
 	"mime/multipart"
 	"net/http"
@@ -80,7 +81,7 @@ func UploadFileHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	defer resp.Body.Close()
 
-	bodyResp, err := io.ReadAll(resp.Body)
+	bodyResp, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		http.Error(w, "Unable to read response", http.StatusInternalServerError)
 		return

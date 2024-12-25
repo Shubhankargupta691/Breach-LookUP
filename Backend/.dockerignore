@@ -1,0 +1,24 @@
+# Ignore the LOGS directory
+LOGS/
+
+# Ignore environment files
+.env
+
+# Ignore Go cache and build artifacts
+*.out
+*.exe
+*.test
+*.log
+
+# Ignore editor and system files
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Ignore git-related files
+.git
+.gitignore
+
+# Ignore any node_modules or dependencies (if applicable)
+node_modules/

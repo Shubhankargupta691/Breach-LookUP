@@ -3,7 +3,7 @@ package email
 import (
 	"encoding/json"
 	"fmt"
-	"io"
+	"io/ioutil"
 	"net/http"
 	"net/url"
 	"os"
@@ -90,7 +90,7 @@ func HandleInput(w http.ResponseWriter, r *http.Request) {
 		res, _ := http.DefaultClient.Do(req)
 
 		defer res.Body.Close()
-		body, _ := io.ReadAll(res.Body)
+		body, _ := ioutil.ReadAll(res.Body)
 
 		var breachResponse BreachResponse
 		json.Unmarshal(body, &breachResponse)
