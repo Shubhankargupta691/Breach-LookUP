@@ -1,23 +1,22 @@
 import React, { useEffect } from 'react';
 import { Gauge, gaugeClasses } from '@mui/x-charts/Gauge';
-import { colors } from '@mui/material';
+import { getDetectionValue } from './script/ExtractFileData';
+import { extractAllData } from '../utils';
 
 export function MaliciousGauge({ jsonData }) {
-
-  const stats = jsonData?.data?.attributes?.last_analysis_stats || {};
-  const malicious = stats.malicious || 0;
-  const suspicious = stats.suspicious || 0;
-  const undetected = stats.undetected || 0;
-  const harmless = stats.harmless || 0;
-  const totalValue = malicious + suspicious;
+  
+  const totalValue = getDetectionValue(jsonData);
+  const {lastAnalysisStats} = extractAllData(jsonData);
+  const undetected = lastAnalysisStats.undetected;
+  const harmless = lastAnalysisStats.harmless;
   const maxValue = totalValue + undetected + harmless;
 
   useEffect(() => {
 
-  }, [malicious, suspicious, totalValue, maxValue]);
+  }, [totalValue, maxValue])
 
   return (
-    <div className="w-full h-full  bg-gray-800 relative flex items-center border border-gray-600 rounded-lg">
+    <div className="w-[13rem] h-[12.5rem] p-2 bg-gray-800 relative flex items-center border border-gray-600 rounded-lg">
       <Gauge
         value={totalValue}
         max={maxValue} 
@@ -27,7 +26,7 @@ export function MaliciousGauge({ jsonData }) {
         sx={(theme) => ({
           [`& .${gaugeClasses.valueText}`]: {
             fontSize: 40,
-            fill: '#f8f8ff',
+            fill: '#ffffff',  // Text color set to white
           },
           [`& .${gaugeClasses.valueArc}`]: {
             fill: '#52b202',
@@ -40,8 +39,8 @@ export function MaliciousGauge({ jsonData }) {
           },
         })}
         text={({ value }) => `${value} / ${maxValue}`}
-        
-     />
+        className='m-auto w-auto'
+      />
     </div>
   );
 }

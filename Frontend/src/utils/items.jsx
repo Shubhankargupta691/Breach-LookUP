@@ -2,7 +2,7 @@ import React from "react";
 
 export const navigationLinks = [
   { name: 'Home', path: '/' },
-  { name: 'Password', path: '/password' },
+  // { name: 'Password', path: '/password' },
   { name: 'Scanner', path: '/scanner' },
   { name: 'Privacy', path: '/privacy' },
   { name: 'FAQ', path: '/faq' },
@@ -74,7 +74,8 @@ export const  privacyPolicyData = [
         "The terms of this Privacy Policy are subject to change at any time – we will take reasonable steps to notify users of changes to the Privacy Policy on our Site.",
         "Your continued use of this Site as a result of any changes to this Policy will be deemed a consent to our Privacy and Personal Information practices.",
         "By using this site, you agree to be bound by the then current version of this Privacy Policy.",
-        "If we make a major change to this Privacy Policy, such as changing the legal basis for the processing of your personal information, we will ask you to agree to the revised Privacy Policy again."
+        "If we make a major change to this Privacy Policy, such as changing the legal basis for the processing of your personal information, we will ask you to agree to the revised Privacy Policy again.",
+        "We value your privacy and are committed to protecting your personal data. Our services do not store your data; instead, any data you provide is managed by our third-party service providers in accordance with their privacy policies."
       ]
     },
     {

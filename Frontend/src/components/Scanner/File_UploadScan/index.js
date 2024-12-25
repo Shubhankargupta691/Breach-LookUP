@@ -1,0 +1,1 @@
+export {default as uploadAndScan} from './uploadAndScan';
