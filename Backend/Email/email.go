@@ -7,8 +7,6 @@ import (
 	"net/http"
 	"net/url"
 	"os"
-
-	"github.com/joho/godotenv"
 )
 
 type InputData struct {
@@ -37,10 +35,10 @@ type BreachResponse struct {
 
 func HandleInput(w http.ResponseWriter, r *http.Request) {
 
-	err := godotenv.Load("../.env")
-	if err != nil {
-		fmt.Println("Error loading .env file")
-	}
+	// err := godotenv.Load("../.env")
+	// if err != nil {
+	// 	fmt.Println("Error loading .env file")
+	// }
 
 	frontendURL := os.Getenv("FRONTEND_URL")
 	if frontendURL != "" {

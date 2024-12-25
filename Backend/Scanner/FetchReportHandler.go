@@ -8,14 +8,12 @@ import (
 	"net/http"
 	"os"
 	"time"
-
-	"github.com/joho/godotenv"
 )
 
 func init() {
-	if err := godotenv.Load("../.env"); err != nil {
-		log.Fatal("Error loading .env file")
-	}
+	// if err := godotenv.Load("../.env"); err != nil {
+	// 	log.Fatal("Error loading .env file")
+	// }
 }
 
 func FetchReportHandler(w http.ResponseWriter, r *http.Request) {
