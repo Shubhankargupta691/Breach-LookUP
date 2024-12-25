@@ -18,7 +18,7 @@ export default async function uploadAndScan(file, setJsonData) {
 
       return;
     }
-    console.log("File hash generated successfully:", File_Hash_SHA256);
+    // console.log("File hash generated successfully:", File_Hash_SHA256);
     const formData = new FormData();
 
     formData.append("file", file);
