@@ -8,7 +8,7 @@ const SearchBox = ({ onSubmit }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         const endpoint = location.pathname === '/password' ? 'password' : 'email';
-        console.log(endpoint);
+        // console.log(endpoint);
         onSubmit(userInput, endpoint);
     };
 

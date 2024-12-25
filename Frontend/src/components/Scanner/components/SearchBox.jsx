@@ -6,7 +6,7 @@ import { detectInputType, getScanActions } from '../utils';
 import FileInfoCard from './FileInfoCard';
 import {uploadAndScan} from '../File_UploadScan';
 import Results from '../Results';
-import {Home, URL} from '../Home_Page';
+import {Home } from '../Home_Page';
 
 const SearchBox = () => {
   const [searchInput, setSearchInput] = useState("");
@@ -32,10 +32,10 @@ const SearchBox = () => {
       return;
     }
     // Your search logic here 
-    console.log("Searching for:", searchInput);
+    // console.log("Searching for:", searchInput);
     const { firstMatch: inputType } = detectInputType(searchInput);
     setInputType(inputType);
-    console.log("Detected input type:", inputType); // Debugging line
+    // console.log("Detected input type:", inputType); // Debugging line
 
     setStatusMessage(`Scanning ${inputType}...`);
     setJsonData(null);
@@ -43,12 +43,12 @@ const SearchBox = () => {
   
     try {
       const action = getScanActions(searchInput, setJsonData);
-      console.log("Action:", action); // Debugging line
+      // console.log("Action:", action); // Debugging line
       
       // Check if the action for the detected inputType exists and call it
       if (action[inputType]) {
         await action[inputType]();
-        console.log("INPUT TYPE:", InputType); // Debugging line
+        // console.log("INPUT TYPE:", InputType); // Debugging line
       } else {
         setStatusMessage("Unsupported input type. Please try again.");
       }
@@ -101,13 +101,13 @@ const SearchBox = () => {
     
     if (jsonData) {
       setStatusMessage("");  // Clear status message when jsonData is received
-      console.log("jsonData:", jsonData); // Debugging line
+      // console.log("jsonData:", jsonData); // Debugging line
       setShowHome(false);
     }
   }, [jsonData, InputType]);
 
   const reanalyze = () => {
-    console.log("Reanalyze initiated");
+    // console.log("Reanalyze initiated");
   };
 
 

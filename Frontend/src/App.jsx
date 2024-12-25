@@ -1,11 +1,9 @@
 // src/App.jsx
 import React, { useState } from 'react';
 import Navbar from './components/Navbar';
-import {Email, Password, ScanForm,Privacy, FAQs } from './page';
+import {Email, Password, Privacy, FAQs } from './page';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css'
-// import Privacy from './page/Privacy';
-// import FAQs from './page/FAQs';
 import SearchBox from './components/Scanner/components/SearchBox';
 
 
