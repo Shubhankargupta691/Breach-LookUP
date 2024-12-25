@@ -7,7 +7,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css'
 import Privacy from './page/Privacy';
 import FAQs from './page/FAQs';
-import ScanForm from './page/ScanForm';
+import SearchBox from './components/Scanner/components/SearchBox';
 
 
 const App = () => {
@@ -19,7 +19,7 @@ const App = () => {
             <Routes>
                 <Route path="/" element={<Email />} />
                 <Route path="/password" element={<Password />} />
-                <Route path="/scanner" element={<ScanForm />} />
+                <Route path="/scanner" element={<SearchBox />} />
                 <Route path="/privacy" element={<Privacy />} />
                 <Route path="/faq" element={<FAQs />} />
                 
