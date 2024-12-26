@@ -33,7 +33,7 @@ func main() {
 	r.HandleFunc("/ip/report", ipscanner.IPreportHandler).Methods("GET")
 
 	// Start the server with CORS middleware
-	log.Println("Server started at http://localhost:8080")
+	// log.Println("Server started at http://localhost:8080")
 	log.Fatal(http.ListenAndServe(":8080", corsOptions(r)))
 	err := http.ListenAndServe(":8080", nil)
 	if err != nil {
