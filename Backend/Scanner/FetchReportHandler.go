@@ -3,7 +3,7 @@ package scanner
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
 	"net/http"
 	"os"
@@ -85,7 +85,7 @@ func fetchReportWithLastAnalysisCheck(baseURL, apiKey, hash string) ([]byte, err
 		}
 		defer res.Body.Close()
 
-		body, err := ioutil.ReadAll(res.Body)
+		body, err := io.ReadAll(res.Body)
 		if err != nil {
 			return nil, fmt.Errorf("failed to read response: %w", err)
 		}
